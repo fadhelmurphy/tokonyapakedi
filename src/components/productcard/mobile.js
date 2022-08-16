@@ -3,7 +3,7 @@ import React from "react";
 export default function Mobile({
   href = "",
   coverImage: { large = "" },
-  title: { english = "", romaji = "" },
+  title: { english = "", romaji = "" }, onAdd = () => {} 
 }) {
   return (
     <>

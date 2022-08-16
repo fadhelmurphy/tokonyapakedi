@@ -1,7 +1,7 @@
 import React from "react";
 import ProductCard from "../../components/productcard";
 
-export default function Mobile({ title = "", data = [] }) {
+export default function Mobile({ title = "", data = [], ...props }) {
   return (
     <>
       <div className="grid">
@@ -13,7 +13,7 @@ export default function Mobile({ title = "", data = [] }) {
             <div className="child-list-products-mobile">
             {
                 data && data.map((item, idx)=> item && (
-                    <ProductCard key={idx} isMobile={false} {...item} />
+                    <ProductCard key={idx} isMobile={false} {...props} {...item} />
                 ))
             }
             </div>

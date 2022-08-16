@@ -5,7 +5,7 @@ export default function Desktop({ href = "", coverImage: {
 }, title: {
     english = "",
     romaji ="",
-} }) {
+}, onAdd = () => {} }) {
   return (
     <>
       <div className="product-card-desktop">
@@ -22,7 +22,7 @@ export default function Desktop({ href = "", coverImage: {
                 {romaji}
             </span>
         </div>
-        <div class="action-card"><p>ADD</p></div>
+        <div onClick={onAdd} className="action-card"><p>ADD</p></div>
       </div>
       <style>
         {`

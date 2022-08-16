@@ -1,7 +1,7 @@
 
   
 import { useQuery, gql } from "@apollo/client";
-  export const _getAll = () => {
+  export const _getAll = ({page,perPage}) => {
     // This is the GraphQL query
     const query = gql`
 
@@ -10,6 +10,8 @@ import { useQuery, gql } from "@apollo/client";
         pageInfo {
           total
           perPage
+          lastPage
+          currentPage
         }
         media(type: ANIME, sort: FAVOURITES_DESC) {
           id
@@ -28,9 +30,9 @@ import { useQuery, gql } from "@apollo/client";
     `;
   
       let variables = {
-        page: 1,
-        perPage: 16,
+        page: page,
+        perPage: perPage,
       };
-      const { data, loading, error } = useQuery(query,{variables});
-      return {result: (!loading && !error) && data.Page.media, loading: loading && <h1>Loading..</h1>}
+      const { data, loading, error, refetch } = useQuery(query,{variables});
+      return {result: (!loading && !error) && data.Page, loading: loading && <h1>Loading..</h1>, refetch}
     };

@@ -35,25 +35,40 @@ const Context = ({ children }) => {
       payload,
     });
   };
-  const getOne = (id) => {
-    return state.collection.AllCollection.filter((item) => item.id === id)[0];
+  const createSubOne = (payload) => {
+    dispatch({
+      type: "ADD_SUB_TO_COLLECTION",
+      payload, // {name: String, item: Object {}}
+    });
+  };
+  const getOne = (name) => {
+    return state.collection.AllCollection.filter((item) => item.name === name)[0];
+  };
+  const getSubOne = (name, id) => {
+    return state.collection.AllCollection.filter((item) => item.name === name).filter((item) => item.id === id)[0];
   };
   const deleteAll = () => {
     dispatch({
       type: "DELETE_ALL_COLLECTION",
     });
   };
-  const deleteOne = (id) => {
+  const deleteOne = (name) => {
     dispatch({
       type: "DELETE_ONE_COLLECTION",
-      payload: state.collection.AllCollection.filter((item) => item.id !== id),
+      payload: state.collection.AllCollection.filter((item) => item.name !== name),
+    });
+  };
+  const deleteSubOne = (name, id) => {
+    dispatch({
+      type: "DELETE_ONE_COLLECTION",
+      payload: state.collection.AllCollection.filter((item) => item.name !== name).filter((item) => item.id !== id),
     });
   };
   const updateAll = () => {};
-  const updateOne = (payload) => {
+  const updateSubOne = (payload) => {
     dispatch({
       type: "UPDATE_ONE_COLLECTION",
-      payload,
+      payload, // {name: String, item: Object {}}
     });
   };
   // const createAll = () => {};
@@ -67,10 +82,14 @@ const Context = ({ children }) => {
       // action collection
       create,
       getOne,
+      getSubOne,
       deleteAll,
       deleteOne,
+      deleteSubOne,
       updateAll,
-      updateOne,
+      createSubOne,
+      updateSubOne,
+      // updateOne,
       // createAll,
       // createOne,
     }),

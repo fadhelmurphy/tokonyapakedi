@@ -1,7 +1,7 @@
 import React from "react";
 import ProductCard from "../../components/productcard";
 
-export default function Desktop({ title = "", data = [] }) {
+export default function Desktop({ title = "", data = [], ...props }) {
   return (
     <>
     <div className="grid">
@@ -13,7 +13,7 @@ export default function Desktop({ title = "", data = [] }) {
           <div className="child-list-products-desktop">
             {
                 data && data.map((item, idx)=> item && (
-                    <ProductCard key={idx} isMobile={false} {...item} />
+                    <ProductCard key={idx} {...props} isMobile={false} {...item} />
                 ))
             }
           </div>

@@ -1,29 +1,45 @@
 const intialCollection = {
   AllCollection: [],
-  DetailCollection: null,
+  // DetailCollection: null,
 };
 
 export const collectionReducer = (state = intialCollection, action) => {
   const { type, payload } = action;
+  let result = []
   switch (type) {
     case "ADD_TO_COLLECTION":
-      return { ...state, AllCollection: [...state.AllCollection, ...payload] };
+      result = { ...state, AllCollection: [...state.AllCollection, payload] }
+      console.log(result, "NAMBAH KOLEKSI")
+      return result;
+      case "ADD_SUB_TO_COLLECTION":
+        result = state.AllCollection.map((ParentItem) => {
+          if(ParentItem.name === payload.name){
+            return [...ParentItem, ...payload.item]
+          }
+          return ParentItem;
+        })
+        return { ...state, AllCollection: [...state.AllCollection, ...result] };
     case "DELETE_ALL_COLLECTION":
       return { ...state, AllCollection: [] };
     case "DELETE_ONE_COLLECTION":
       return { ...state, AllCollection: payload };
-    case "UPDATE_ONE_COLLECTION":
-      const result = state.AllCollection.map((item)=>{
-        if(item.id === payload.id){
-          item.title.english = payload.title.english || item.title.english;
-          item.title.romaji = payload.title.romaji || item.title.romaji;
-          item.coverImage.large = payload.coverImage.large || item.coverImage.large;
+    case "UPDATE_SUB_ONE_COLLECTION":
+      result = state.AllCollection.map((ParentItem) => {
+        if(ParentItem.name === payload.name){
+          ParentItem.list && ParentItem.list.map((item)=>{
+            if(item.id === payload.item.id){
+              item.title.english = payload.item.title.english || item.title.english;
+              item.title.romaji = payload.item.title.romaji || item.title.romaji;
+              item.coverImage.large = payload.item.coverImage.large || item.coverImage.large;
+            }
+            return item;
+          })
         }
-        return item;
+        return ParentItem;
       })
       return { ...state, AllCollection: result };
-    case "GET_DETAIL_COLLECTION_SUCCESS":
-      return { ...state, DetailCollection: payload };
+    // case "GET_DETAIL_COLLECTION_SUCCESS":
+    //   return { ...state, DetailCollection: payload };
     default:
       return state;
   }
