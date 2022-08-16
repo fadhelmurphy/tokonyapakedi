@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useCallback,
 } from "react";
-import {combineReducer} from "./CombinedReducers";
+import { combineReducer } from "./CombinedReducers";
 import { collectionReducer } from "./Reducers";
 
 export const RootContext = createContext({});
@@ -29,14 +29,35 @@ const Context = ({ children }) => {
   });
 
   // CRUD COLLECTION
-  const _getAll = async () => {};
-  const _getOne = async () => {};
-  const deleteAll = async () => {};
-  const deleteOne = async () => {};
-  const updateAll = async () => {};
-  const updateOne = async () => {};
-  const createAll = async () => {};
-  const createOne = async () => {};
+  const create = (payload) => {
+    dispatch({
+      type: "ADD_TO_COLLECTION",
+      payload,
+    });
+  };
+  const getOne = (id) => {
+    return state.collection.AllCollection.filter((item) => item.id === id)[0];
+  };
+  const deleteAll = () => {
+    dispatch({
+      type: "DELETE_ALL_COLLECTION",
+    });
+  };
+  const deleteOne = (id) => {
+    dispatch({
+      type: "DELETE_ONE_COLLECTION",
+      payload: state.collection.AllCollection.filter((item) => item.id !== id),
+    });
+  };
+  const updateAll = () => {};
+  const updateOne = (payload) => {
+    dispatch({
+      type: "UPDATE_ONE_COLLECTION",
+      payload,
+    });
+  };
+  // const createAll = () => {};
+  // const createOne = (id) => {};
 
   // pass in the returned value of useReducer
   const contextValue = useMemo(
@@ -44,14 +65,14 @@ const Context = ({ children }) => {
       state,
       dispatch,
       // action collection
-      _getAll,
-      _getOne,
+      create,
+      getOne,
       deleteAll,
       deleteOne,
       updateAll,
       updateOne,
-      createAll,
-      createOne
+      // createAll,
+      // createOne,
     }),
     [state, dispatch]
   );

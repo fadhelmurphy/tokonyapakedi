@@ -19,6 +19,10 @@ export default function index() {
         url: "/",
         exact: true,
       },
+      {
+        url: "/cart",
+        exact: true,
+      },
     ];
     return (
       <>
