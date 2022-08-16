@@ -2,21 +2,23 @@ import React, { useEffect, useState } from "react";
 import { GetRootContext } from "../store/Context";
 import { _getAll } from "../helpers/fetchers";
 import ChildListProducts from "../containers/child-list-products";
-import Drawer from "../components/drawer";
 import { ScrollToUp } from "../helpers/utils";
-import Pagination from "../components/pagination";
+// import Pagination from "../components/pagination";
 import { Input } from "../components/form";
-import Button from "../components/button";
+const Button = React.lazy(() => import("../components/button"));
+const Drawer = React.lazy(() => import("../components/drawer"));
+const Pagination = React.lazy(() => import("../components/pagination"));
 
 const Home = () => {
   const RootContext = GetRootContext();
-  const { state, getOne, deleteAll, create, updateOne } = RootContext;
+  const { state, getOne, deleteAll, create, updateOne, deleteOne } = RootContext;
   const [formNewCollection, setFormNewCollection] = useState();
   const [currentCollection, setCurrentCollection] = useState({});
   const [showDrawer, setShowDrawer] = useState({
     listCollection: false,
     detailCollection: false,
     addCollection: false,
+    editCollection: false,
   });
   const [page, setPage] = useState(1);
   const [isNotValid, setNotValid] = useState(false);
@@ -56,7 +58,7 @@ const Home = () => {
     setCurrentCollection(getOne(name))
   }
 
-  console.log(state?.collection?.AllCollection, "JOSS");
+  // console.log(state?.collection?.AllCollection, "JOSS");
 
   return (
     <>
@@ -86,6 +88,7 @@ const Home = () => {
           handleShowDrawer("listCollection", false);
         }}
         onSave={() => {
+          setFormNewCollection(undefined);
           handleShowDrawer("listCollection", false);
           handleShowDrawer("addCollection", true);
         }}
@@ -125,7 +128,11 @@ const Home = () => {
                     variant="secondary"
                     font_family="Poppins"
                     font_weight="500"
-                    on_click={false}
+                    on_click={()=>{
+                      HandleGetOneCollection(item.name);
+                      handleShowDrawer("editCollection", true);
+                      setFormNewCollection({name:item.name})
+                    }}
                   >
                     EDIT
                   </Button>
@@ -135,7 +142,7 @@ const Home = () => {
                     variant="secondary"
                     font_family="Poppins"
                     font_weight="500"
-                    on_click={false}
+                    on_click={()=>deleteOne(item.name)}
                   >
                     DELETE
                   </Button>
@@ -171,6 +178,40 @@ const Home = () => {
       <Drawer
         isMobile={isMobile}
         contentBackground="#ffffff"
+        title="Edit Collection"
+        show={showDrawer && showDrawer.editCollection}
+        onHide={() => {
+          handleShowDrawer("listCollection", false);
+          handleShowDrawer("editCollection", false);
+        }}
+        onSave={() => {
+          if (!isNotValid) {
+            handleShowDrawer("editCollection", false);
+            handleShowDrawer("listCollection", true);
+            updateOne({ name: currentCollection.name, newName: formNewCollection?.name });
+          }
+        }}
+        onBack={() => {
+          handleShowDrawer("listCollection", true);
+          handleShowDrawer("editCollection", false);
+        }}
+        type="type-1"
+        saveTitle="SUBMIT"
+      >
+        <div className="collection-list">
+          <Input
+            label="Name"
+            value={formNewCollection?.name || ""}
+            onChange={(val) => HandleChangeSelect("name", val)}
+            validation={!formNewCollection?.name?.length > 0}
+            ifNotValid={(val) => setNotValid(val)}
+            placeholder="Example : MEME"
+          />
+        </div>
+      </Drawer>
+      <Drawer
+        isMobile={isMobile}
+        contentBackground="#ffffff"
         title="New Collection"
         show={showDrawer && showDrawer.addCollection}
         onHide={() => {
@@ -189,7 +230,7 @@ const Home = () => {
           handleShowDrawer("addCollection", false);
         }}
         type="type-1"
-        saveTitle="ADD COLLECTION"
+        saveTitle="SUBMIT"
       >
         <div className="collection-list">
           <Input
@@ -198,7 +239,7 @@ const Home = () => {
             onChange={(val) => HandleChangeSelect("name", val)}
             validation={!formNewCollection?.name?.length > 0}
             ifNotValid={(val) => setNotValid(val)}
-            placeholder="Example : Office"
+            placeholder="Example : MEME"
           />
         </div>
       </Drawer>

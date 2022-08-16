@@ -65,9 +65,15 @@ const Context = ({ children }) => {
     });
   };
   const updateAll = () => {};
-  const updateSubOne = (payload) => {
+  const updateOne = (payload) => {
     dispatch({
       type: "UPDATE_ONE_COLLECTION",
+      payload, // {name: String, newName: String}
+    });
+  };
+  const updateSubOne = (payload) => {
+    dispatch({
+      type: "UPDATE_SUB_ONE_COLLECTION",
       payload, // {name: String, item: Object {}}
     });
   };
@@ -88,6 +94,7 @@ const Context = ({ children }) => {
       deleteSubOne,
       updateAll,
       createSubOne,
+      updateOne,
       updateSubOne,
       // updateOne,
       // createAll,

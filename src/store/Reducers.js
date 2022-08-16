@@ -9,7 +9,6 @@ export const collectionReducer = (state = intialCollection, action) => {
   switch (type) {
     case "ADD_TO_COLLECTION":
       result = { ...state, AllCollection: [...state.AllCollection, payload] }
-      console.log(result, "NAMBAH KOLEKSI")
       return result;
       case "ADD_SUB_TO_COLLECTION":
         result = state.AllCollection.map((ParentItem) => {
@@ -23,6 +22,14 @@ export const collectionReducer = (state = intialCollection, action) => {
       return { ...state, AllCollection: [] };
     case "DELETE_ONE_COLLECTION":
       return { ...state, AllCollection: payload };
+      case "UPDATE_ONE_COLLECTION":
+        result = state.AllCollection.map((ParentItem) => {
+          if(ParentItem.name === payload.name){
+            ParentItem.name = payload.newName;
+          }
+          return ParentItem;
+        })
+        return { ...state, AllCollection: result };
     case "UPDATE_SUB_ONE_COLLECTION":
       result = state.AllCollection.map((ParentItem) => {
         if(ParentItem.name === payload.name){
