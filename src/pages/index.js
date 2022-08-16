@@ -102,8 +102,8 @@ const Home = () => {
           {state.collection.AllCollection?.length === 0 && (
             <p>There's no collection yet</p>
           )}
-          {state?.collection?.AllCollection?.map((item) => (
-            <div className="collection-card">
+          {state?.collection?.AllCollection?.map((item, idx) => (
+            <div key={idx} className="collection-card">
               <div className="collection-card-content">
                 <h3>{item.name}</h3>
               </div>
