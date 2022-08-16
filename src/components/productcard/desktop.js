@@ -1,11 +1,13 @@
 import React from "react";
 
-export default function Desktop({ href = "", coverImage: {
-    large = ""
-}, title: {
-    english = "",
-    romaji ="",
-}, onAdd = () => {} }) {
+export default function Desktop({onAdd = () => {}, ...props }) {
+    const { href = "", coverImage: {
+        large = ""
+    }, title: {
+        english = "",
+        romaji ="",
+    }
+} = props;
   return (
     <>
       <div className="product-card-desktop">
@@ -22,7 +24,7 @@ export default function Desktop({ href = "", coverImage: {
                 {romaji}
             </span>
         </div>
-        <div onClick={onAdd} className="action-card"><p>ADD</p></div>
+        <div onClick={()=>onAdd(props)} className="action-card"><p>ADD</p></div>
       </div>
       <style>
         {`

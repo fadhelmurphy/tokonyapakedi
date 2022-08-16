@@ -9,7 +9,7 @@ import Button from "../../button";
 import { IconX } from "@tabler/icons";
 
 const Type3 = ({
-	show, title, children, zIndex, contentBackground, onHide, onSave, saveTitle,
+	show, title, children, zIndex, contentBackground, onHide, onSave, saveTitle, onSelect,
 	// isEdit,
 	onBack,
 }) => (
@@ -34,7 +34,7 @@ const Type3 = ({
 				{children}
 			</div>
 			{
-				typeof onSave === "function" && (
+				typeof onSave === "function" && typeof onSelect !== "function" ? (
 				<div className="footer-btn grid">
 					<div className="col-6">
 						<Button block color="#000" size="medium" variant="secondary" font_family="Poppins" font_weight="500" on_click={onBack}>Cancel</Button>
@@ -43,7 +43,19 @@ const Type3 = ({
 						<Button block size="medium" variant="primary" font_family="Poppins" font_weight="500" on_click={onSave}>{saveTitle}</Button>
 					</div>
 				</div>
-				)
+				) : (
+					<div className="footer-btn grid">
+						<div className="col-4">
+							<Button block color="#000" size="medium" variant="secondary" font_family="Poppins" font_weight="500" on_click={onBack}>Cancel</Button>
+						</div>
+						<div className="col-4">
+							<Button block color="#000" size="medium" variant="secondary" font_family="Poppins" font_weight="500" on_click={onSave}>{saveTitle}</Button>
+						</div>
+						<div className="col-4">
+							<Button block size="medium" variant="primary" font_family="Poppins" font_weight="500" on_click={onSelect}>Select</Button>
+						</div>
+					</div>
+					)
 				// 	: (
 				// 		<div className="footer-btn grid">
 				// 			<div className="col-12">
@@ -160,6 +172,7 @@ Type3.propTypes = {
 	onHide: PropTypes.func,
 	onSave: PropTypes.func,
 	onBack: PropTypes.func,
+	onSelect: PropTypes.func,
 	// isEdit: PropTypes.bool,
 };
 

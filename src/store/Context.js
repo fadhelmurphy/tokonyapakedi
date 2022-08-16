@@ -38,7 +38,7 @@ const Context = ({ children }) => {
   const createSubOne = (payload) => {
     dispatch({
       type: "ADD_SUB_TO_COLLECTION",
-      payload, // {name: String, item: Object {}}
+      payload, // {name: Array, item: Object {}}
     });
   };
   const getOne = (name) => {
@@ -77,6 +77,12 @@ const Context = ({ children }) => {
       payload, // {name: String, item: Object {}}
     });
   };
+  const updateSelectedCollection = (payload) => {
+    dispatch({
+      type: "DELETE_ONE_COLLECTION",
+      payload, 
+    });
+  };
   // const createAll = () => {};
   // const createOne = (id) => {};
 
@@ -96,11 +102,24 @@ const Context = ({ children }) => {
       createSubOne,
       updateOne,
       updateSubOne,
+      updateSelectedCollection,
       // updateOne,
       // createAll,
       // createOne,
     }),
-    [state, dispatch]
+    [state, dispatch,
+      // action collection
+      create,
+      getOne,
+      getSubOne,
+      deleteAll,
+      deleteOne,
+      deleteSubOne,
+      updateAll,
+      createSubOne,
+      updateOne,
+      updateSubOne,
+      updateSelectedCollection]
   );
 
   useEffect(() => {

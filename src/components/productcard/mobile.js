@@ -1,10 +1,13 @@
 import React from "react";
 
-export default function Mobile({
-  href = "",
-  coverImage: { large = "" },
-  title: { english = "", romaji = "" }, onAdd = () => {} 
-}) {
+export default function Mobile({onAdd = () => {}, ...props }) {
+    const { href = "", coverImage: {
+        large = ""
+    }, title: {
+        english = "",
+        romaji ="",
+    }
+} = props;
   return (
     <>
       <div className="product-card-mobile">
@@ -17,9 +20,30 @@ export default function Mobile({
           <span className="english">{english}</span>
           <span className="romaji">{romaji}</span>
         </div>
+        <div onClick={()=>onAdd(props)} className="action-card"><p>ADD</p></div>
       </div>
       <style jsx>
         {`
+        div.action-card {
+            height: auto;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1;
+            transition: all .5s ease;
+          }
+          div.action-card p {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 35px;
+            background: #000;
+            text-decoration: none;
+            color: #fff;
+            margin: 10px 0 0 0;
+            box-sizing: border-box;
+            cursor: pointer;
+          }
           .img-product {
             width: 100%;
             height: 200px;

@@ -21,7 +21,7 @@ const Template = [
 ];
 
 const Desktop = ({
-	type, show, title, children, zIndex, contentBackground, saveTitle, onBack, onHide, onReset, onSave, isEdit, message, promoCode, width,
+	type, show, title, children, zIndex, contentBackground, saveTitle, onBack, onHide, onReset, onSave, onSelect, isEdit, message, promoCode, width,
 }) => (
 	Template.filter((item) => item.id === type).map((style, idx) => (
 		<style.component
@@ -41,6 +41,7 @@ const Desktop = ({
 			message={message}
 			promoCode={promoCode}
 			width={width}
+			onSelect={onSelect}
 		/>
 	))
 );
@@ -61,6 +62,7 @@ Desktop.propTypes = {
 	onSave: PropTypes.func,
 	promoCode: PropTypes.string,
 	width: PropTypes.string,
+	onSelect: PropTypes.func,
 };
 
 export default Desktop;

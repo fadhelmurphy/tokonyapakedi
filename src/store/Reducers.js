@@ -6,18 +6,20 @@ const intialCollection = {
 export const collectionReducer = (state = intialCollection, action) => {
   const { type, payload } = action;
   let result = []
+  console.log("prevState: ", state);
+  console.log("action: ", action);
   switch (type) {
+    case "ADD_SUB_TO_COLLECTION":
+      result = state.AllCollection.map((ParentItem) => {
+        if(payload.name.includes(ParentItem.name.toLowerCase())){
+          ParentItem.list = [...ParentItem.list, payload.item]
+        }
+        return ParentItem;
+      })
+      return { ...state, AllCollection: result };
     case "ADD_TO_COLLECTION":
       result = { ...state, AllCollection: [...state.AllCollection, payload] }
       return result;
-      case "ADD_SUB_TO_COLLECTION":
-        result = state.AllCollection.map((ParentItem) => {
-          if(ParentItem.name === payload.name){
-            return [...ParentItem, ...payload.item]
-          }
-          return ParentItem;
-        })
-        return { ...state, AllCollection: [...state.AllCollection, ...result] };
     case "DELETE_ALL_COLLECTION":
       return { ...state, AllCollection: [] };
     case "DELETE_ONE_COLLECTION":

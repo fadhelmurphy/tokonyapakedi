@@ -11,7 +11,7 @@ const Pagination = React.lazy(() => import("../components/pagination"));
 
 const Home = () => {
   const RootContext = GetRootContext();
-  const { state, getOne, deleteAll, create, updateOne, deleteOne } = RootContext;
+  const { state, getOne, deleteAll, create, updateOne, deleteOne, createSubOne, updateSelectedCollection } = RootContext;
   const [formNewCollection, setFormNewCollection] = useState();
   const [currentCollection, setCurrentCollection] = useState({});
   const [showDrawer, setShowDrawer] = useState({
@@ -22,6 +22,25 @@ const Home = () => {
   });
   const [page, setPage] = useState(1);
   const [isNotValid, setNotValid] = useState(false);
+  const [selectedAnime, setSelectedAnime] = useState({});
+  const HandleChooseCollection = (params) => {
+
+		const { key, selected } = params;
+
+		const updatedList = state?.collection?.AllCollection && state?.collection?.AllCollection.map((item, idx) => {
+
+			if (idx === key) {
+
+				return { ...item, selected: !selected };
+
+			}
+			return { ...item };
+
+		});
+
+		updateSelectedCollection(updatedList);
+
+	};
   const handleShowDrawer = (key, val) =>
     setShowDrawer((prev) => ({ ...prev, [key]: val }));
   // deleteAll();
@@ -38,7 +57,8 @@ const Home = () => {
       /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
     )
   );
-  const onAdd = () => {
+  const onAdd = (val) => {
+    setSelectedAnime(val)
     handleShowDrawer("listCollection", true);
   };
   const HandleLoadMore = async (e) => {
@@ -58,7 +78,8 @@ const Home = () => {
     setCurrentCollection(getOne(name))
   }
 
-  // console.log(state?.collection?.AllCollection, "JOSS");
+  // console.log(selectedAnime, "selectedAnime")
+  console.log(state?.collection?.AllCollection, "JOSS");
 
   return (
     <>
@@ -68,7 +89,7 @@ const Home = () => {
         <ChildListProducts
           isMobile={isMobile}
           data={result.media}
-          onAdd={onAdd}
+          onAdd={(val)=>onAdd(val)}
         />
         {result && result.pageInfo && (
           <Pagination
@@ -95,20 +116,43 @@ const Home = () => {
         onBack={() => {
           handleShowDrawer("listCollection", false);
         }}
+        onSelect={()=>{
+          const selected = state?.collection?.AllCollection.filter((item)=> item.selected);
+          const name = selected.map((item)=>item.name.toLowerCase())
+          console.log(selectedAnime, "selectedAnime")
+          selected?.length > 0 && createSubOne({name, item: selectedAnime});
+          updateSelectedCollection(state?.collection?.AllCollection.map((item)=>{
+            item.selected = false;
+            return item;
+          }))
+          handleShowDrawer("listCollection", false);
+        }}
         type="type-1"
         saveTitle="ADD NEW COLLECTION"
       >
         <div className="collection-list">
-          {state.collection.AllCollection?.length === 0 && (
+          {state?.collection?.AllCollection?.length === 0 && (
             <p>There's no collection yet</p>
           )}
           {state?.collection?.AllCollection?.map((item, idx) => (
-            <div key={idx} className="collection-card">
+            <div key={idx} className={`collection-card${item.selected ? " active" :""}`}>
               <div className="collection-card-content">
                 <h3>{item.name}</h3>
               </div>
               <div className="collection-card-footer">
                 <div className="action">
+                  <Button
+                    color="#000"
+                    size="medium"
+                    variant="primary"
+                    font_family="Poppins"
+                    font_weight="500"
+                    on_click={()=>{
+                      HandleChooseCollection({key:idx, selected:item.selected})
+                    }}
+                  >
+                    Choose
+                  </Button>
                   <Button
                     color="#000"
                     size="medium"
@@ -222,7 +266,7 @@ const Home = () => {
           if (!isNotValid) {
             handleShowDrawer("addCollection", false);
             handleShowDrawer("listCollection", true);
-            create({ name: formNewCollection?.name, list: [] });
+            create({ name: formNewCollection?.name, list: [], selected: false });
           }
         }}
         onBack={() => {
@@ -246,6 +290,9 @@ const Home = () => {
       <style jsx>
         {`
           .collection-card {
+            border: 1px solid #DFE3E8;
+          }
+          .collection-card.active {
             border: 1px solid #000;
           }
           .collection-card h4 {
