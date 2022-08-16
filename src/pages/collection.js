@@ -1,11 +1,11 @@
 import React from "react";
 import { withContext } from "../store/Context";
 
-const Cart = () =>{
+const Collection = () =>{
 
     return(
     <>
-    <h1>Cart Page</h1>
+    <h1>Collection Page</h1>
     </>)
 }
-export default withContext(Cart);
+export default withContext(Collection);

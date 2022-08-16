@@ -20,7 +20,7 @@ export default function index() {
         exact: true,
       },
       {
-        url: "/cart",
+        url: "/collection",
         exact: true,
       },
     ];
