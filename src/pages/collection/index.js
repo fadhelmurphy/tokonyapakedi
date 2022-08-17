@@ -75,8 +75,8 @@ const Collection = (props) => {
   return (
     <>
       <div className="container">
-        <h1>Your Collection</h1>
         <div className="collection-list">
+        <h1>Your Collection</h1>
           <div onClick={() => onAdd()} className="action-card">
             <p>ADD</p>
           </div>
@@ -114,13 +114,19 @@ const Collection = (props) => {
         title="Edit Collection"
         show={showDrawer && showDrawer.editCollection}
         onSave={() => {
+            
           if (!isNotValid) {
-            handleShowDrawer("editCollection", false);
-            handleShowDrawer("listCollection", true);
-            updateOne({
-              name: currentCollection.name,
-              newName: formNewCollection?.name,
-            });
+            const isCollectionExist = getOne(formNewCollection?.name);
+            if (!isCollectionExist) {
+                handleShowDrawer("editCollection", false);
+                handleShowDrawer("listCollection", true);
+                updateOne({
+                  name: currentCollection.name,
+                  newName: formNewCollection?.name,
+                });
+            } else {
+              alert("Name Already exist! Please choose another name");
+            }
           }
         }}
         onBack={() => {
@@ -180,6 +186,9 @@ const Collection = (props) => {
           }
         }}
         onHide={() => {
+          handleShowDrawer("addCollection", false);
+        }}
+        onBack={() => {
           handleShowDrawer("addCollection", false);
         }}
         type="type-1"

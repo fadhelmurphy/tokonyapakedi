@@ -27,7 +27,7 @@ const Input = ({
 		<input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} required />
 		{validation && <p className="error">{`${label} must be filled`}</p>}
 		{!validation && customError.length > 0 && <p className="error">{customError}</p>}
-		<style jsx>
+		<style jsx="true">
 			{`
 				.form-input-bs {
 					padding: 0 0 10px 0;

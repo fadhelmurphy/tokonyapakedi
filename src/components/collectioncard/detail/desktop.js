@@ -1,7 +1,8 @@
 import React from "react";
+import { capitalizeFirstLetter } from "../../../helpers/utils";
 const Button = React.lazy(() => import("../../button"));
 
-export default function Desktop({ data = [], onChoose = () => {}, onInfo = () => {}, onEdit = () => {}, onDelete = () => {} }) {
+export default function Desktop({ data = [], onChoose = () => {}, onInfo = () => {} }) {
   return (
     <>
       {data?.map((item, idx) => (
@@ -11,7 +12,7 @@ export default function Desktop({ data = [], onChoose = () => {}, onInfo = () =>
         >
           <div className="collection-card-content">
             <a href={`/collection/${item.name}`}>
-              <h3>{item.name}</h3>
+              <h2>{capitalizeFirstLetter(item.name)}</h2>
             </a>
           </div>
           <div className="collection-card-footer">
@@ -48,46 +49,6 @@ export default function Desktop({ data = [], onChoose = () => {}, onInfo = () =>
               >
                 INFO
               </Button>
-              <Button
-                color="#000"
-                size="medium"
-                variant="secondary"
-                font_family="Poppins"
-                font_weight="500"
-                on_click={() => {
-                  window.location = `${process.env.REACT_APP_BASEURL}/collection/${item?.name}`;
-                }}
-              >
-                DETAILS
-              </Button>
-              <Button
-                color="#000"
-                size="medium"
-                variant="secondary"
-                font_family="Poppins"
-                font_weight="500"
-                on_click={() => {
-                  onEdit(item);
-                  // HandleGetOneCollection(item.name);
-                  // handleShowDrawer("editCollection", true);
-                  // setFormNewCollection({ name: item.name });
-                }}
-              >
-                EDIT
-              </Button>
-              <Button
-                color="#000"
-                size="medium"
-                variant="secondary"
-                font_family="Poppins"
-                font_weight="500"
-                on_click={() => {
-                  // deleteOne(item.name)
-                  onDelete(item);
-                }}
-              >
-                DELETE
-              </Button>
             </div>
           </div>
         </div>
@@ -100,15 +61,9 @@ export default function Desktop({ data = [], onChoose = () => {}, onInfo = () =>
           .collection-card.active {
             border: 1px solid #000;
           }
-          .collection-card h4 {
+          .collection-card h2 {
             font-family: "Poppins";
-            font-style: normal;
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 22px;
-            letter-spacing: 0.04em;
             text-transform: capitalize;
-            margin-bottom: 9px;
             display: flex;
             align-items: center;
           }

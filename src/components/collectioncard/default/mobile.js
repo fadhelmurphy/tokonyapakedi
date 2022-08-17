@@ -1,4 +1,5 @@
 import React from "react";
+import { capitalizeFirstLetter } from "../../../helpers/utils";
 const Button = React.lazy(() => import("../../button"));
 
 export default function Mobile({ data = [], onEdit = () => {}, onDelete = () => {} }) {
@@ -11,7 +12,7 @@ export default function Mobile({ data = [], onEdit = () => {}, onDelete = () => 
         >
           <div className="collection-card-content">
             <a href={`/collection/${item.name}`}>
-              <h2>{item.name}</h2>
+              <h2>{capitalizeFirstLetter(item.name)}</h2>
             </a>
             <div className="bannerImage">
             <a href={`/collection/${item.name}`}>
@@ -66,7 +67,6 @@ export default function Mobile({ data = [], onEdit = () => {}, onDelete = () => 
             text-transform: capitalize;
             display: flex;
             align-items: center;
-            margin: 20px;
           }
           .collection-card-content {
             display: flex;

@@ -22,7 +22,7 @@ export default function Mobile({onAdd = () => {}, ...props }) {
         </div>
         <div onClick={()=>onAdd(props)} className="action-card"><p>ADD</p></div>
       </div>
-      <style jsx>
+      <style jsx="true">
         {`
         div.action-card {
             height: auto;

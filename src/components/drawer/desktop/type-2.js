@@ -74,7 +74,7 @@ const Type3 = ({
 				`}
 			`}
 		</style>
-		<style jsx>
+		<style jsx="true">
 			{`
 				.drawer-type-4-filter {
 					position: fixed;

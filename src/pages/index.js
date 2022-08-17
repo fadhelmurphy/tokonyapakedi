@@ -5,6 +5,7 @@ import ChildListProducts from "../containers/child-list-products";
 import { ScrollToUp } from "../helpers/utils";
 // import Pagination from "../components/pagination";
 import { Input } from "../components/form";
+import { useNavigate } from "react-router-dom";
 const Button = React.lazy(() => import("../components/button"));
 const Drawer = React.lazy(() => import("../components/drawer"));
 const Pagination = React.lazy(() => import("../components/pagination"));
@@ -25,6 +26,7 @@ const Home = (props) => {
     createSubOne,
     updateSelectedCollection,
   } = props;
+  const navigate = useNavigate();
   const [formNewCollection, setFormNewCollection] = useState();
   const [currentCollection, setCurrentCollection] = useState({});
   const [showDrawer, setShowDrawer] = useState({
@@ -92,11 +94,11 @@ const Home = (props) => {
 
   return (
     <>
-      <h1>Product List</h1>
       {loading}
       <div className="container">
         {result && result.media && (
           <ChildListProducts
+            title="Movie list"
             isMobile={isMobile}
             data={result.media}
             onAdd={(val) => onAdd(val)}
@@ -123,11 +125,6 @@ const Home = (props) => {
           handleShowDrawer("listCollection", false);
         } : null}
         onSave={() => {
-          setFormNewCollection(undefined);
-          handleShowDrawer("listCollection", false);
-          handleShowDrawer("addCollection", true);
-        }}
-        onSelect={() => {
           const selected = state?.collection?.AllCollection.filter(
             (item) => item.selected
           );
@@ -159,7 +156,7 @@ const Home = (props) => {
           }
         }}
         type="type-1"
-        saveTitle="ADD NEW COLLECTION"
+        saveTitle="SUBMIT"
       >
         <div className="collection-list">
           {state?.collection?.AllCollection?.length === 0 && (
@@ -178,12 +175,12 @@ const Home = (props) => {
               HandleGetOneCollection(val.name);
               handleShowDrawer("detailCollection", true);
             }}
-            onEdit={(val) => {
-              HandleGetOneCollection(val.name);
-              handleShowDrawer("editCollection", true);
-              setFormNewCollection({ name: val.name });
-            }}
-            onDelete={(val) => deleteOne(val.name)}
+            // onEdit={(val) => {
+            //   HandleGetOneCollection(val.name);
+            //   handleShowDrawer("editCollection", true);
+            //   setFormNewCollection({ name: val.name });
+            // }}
+            // onDelete={(val) => deleteOne(val.name)}
           />
         </div>
       </Drawer>
@@ -192,10 +189,10 @@ const Home = (props) => {
         contentBackground="#ffffff"
         title={currentCollection.name}
         show={showDrawer && showDrawer.detailCollection}
-        onSave={() => {
-          handleShowDrawer("detailCollection", false);
-          handleShowDrawer("listCollection", true);
-        }}
+        // onSave={() => {
+        //   handleShowDrawer("detailCollection", false);
+        //   handleShowDrawer("listCollection", true);
+        // }}
         onBack={() => {
           handleShowDrawer("listCollection", true);
           handleShowDrawer("detailCollection", false);
@@ -216,7 +213,7 @@ const Home = (props) => {
                     <img src={item.coverImage.large} alt="image detail" />
                   </div>
                   <div className="col-8">
-                    <h2>{item.title?.english || item.title?.romaji}</h2>
+                    <h2 onClick={() => navigate(`/anime/${item.id}`)}>{item.title?.english || item.title?.romaji}</h2>
 
                     <span className="rating">
                       <p>
@@ -246,118 +243,12 @@ const Home = (props) => {
                   </div>
                 </div>
               </div>
-              <div className="collection-card-footer">
-                <div className="action">
-                  <Button
-                    color="#000"
-                    size="medium"
-                    variant="secondary"
-                    font_family="Poppins"
-                    font_weight="500"
-                    on_click={() => {
-                      window.location = `${process.env.REACT_APP_BASEURL}/anime/${item?.id}`;
-                    }}
-                  >
-                    SEE DETAIL
-                  </Button>
-                  <Button
-                    color="#000"
-                    size="medium"
-                    variant="secondary"
-                    font_family="Poppins"
-                    font_weight="500"
-                    on_click={() => {
-                      deleteSubOne(currentCollection.name, item.id);
-                      handleShowDrawer("detailCollection", false);
-                      handleShowDrawer("listCollection", true);
-                    }}
-                  >
-                    DELETE
-                  </Button>
-                </div>
-              </div>
             </div>
           ))}
         </div>
       </Drawer>
-      <Drawer
-        isMobile={isMobile}
-        contentBackground="#ffffff"
-        title="Edit Collection"
-        show={showDrawer && showDrawer.editCollection}
-        onSave={() => {
-          if (!isNotValid) {
-            handleShowDrawer("editCollection", false);
-            handleShowDrawer("listCollection", true);
-            updateOne({
-              name: currentCollection.name,
-              newName: formNewCollection?.name,
-            });
-          }
-        }}
-        onBack={() => {
-          handleShowDrawer("listCollection", true);
-          handleShowDrawer("editCollection", false);
-        }}
-        type="type-1"
-        saveTitle="SUBMIT"
-      >
-        <div className="collection-list">
-          <Input
-            label="Name"
-            value={formNewCollection?.name || ""}
-            onChange={(val) => HandleChangeSelect("name", val)}
-            validation={!formNewCollection?.name?.length > 0}
-            ifNotValid={(val) => setNotValid(val)}
-            placeholder="Example : MEME"
-          />
-        </div>
-      </Drawer>
-      <Drawer
-        isMobile={isMobile}
-        contentBackground="#ffffff"
-        title="New Collection"
-        show={showDrawer && showDrawer.addCollection}
-        onSave={() => {
-          if (!isNotValid) {
-            const isCollectionExist = getOne(formNewCollection?.name);
-            if (!isCollectionExist) {
-              handleShowDrawer("addCollection", false);
-              handleShowDrawer("listCollection", true);
-              create({
-                name: formNewCollection?.name,
-                list: [],
-                selected: false,
-              });
-            } else {
-              alert("Name Already exist! Please choose another name");
-            }
-          }
-        }}
-        onBack={!isMobile ? () => {
-          handleShowDrawer("listCollection", true);
-          handleShowDrawer("addCollection", false);
-        }: null}
-        onHide={() => {
-          handleShowDrawer("listCollection", true);
-          handleShowDrawer("addCollection", false);
-        }}
-        type="type-1"
-        saveTitle="SUBMIT"
-      >
-        <div className="collection-list">
-          <Input
-            label="Name"
-            value={formNewCollection?.name || ""}
-            onChange={(val) => HandleChangeSelect("name", val)}
-            validation={!formNewCollection?.name?.length > 0}
-            ifNotValid={(val) => setNotValid(val)}
-            placeholder="Example : MEME"
-          />
-        </div>
-      </Drawer>
 
-      <style jsx>
+      <style jsx="true">
         {`
           .collection-card {
             border: 1px solid #dfe3e8;
@@ -389,6 +280,9 @@ const Home = (props) => {
           }
           .collection-card-content .grid .col-8 {
             align-self: center;
+          }
+          .collection-card-content .grid .col-8 h2 {
+            cursor: pointer;
           }
           .collection-card-content .grid .col-4 {
             padding: 10px;

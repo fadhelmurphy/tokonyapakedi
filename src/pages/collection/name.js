@@ -3,6 +3,7 @@ import { GetRootContext, RootContext, withContext } from "../../store/Context";
 // import Pagination from "../components/pagination";
 import { Input } from "../../components/form";
 import { useNavigate, useParams } from "react-router-dom";
+import { capitalizeFirstLetter } from "../../helpers/utils";
 const Button = React.lazy(() => import("../../components/button"));
 const Drawer = React.lazy(() => import("../../components/drawer"));
 const CollectionCard = React.lazy(() =>
@@ -11,7 +12,7 @@ const CollectionCard = React.lazy(() =>
 
 const DetailCollection = (props) => {
   const router = useParams();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const {
     state,
     getOne,
@@ -44,7 +45,7 @@ const DetailCollection = (props) => {
     <>
       <div className="container">
         <div className="collection-list">
-          {currentCollection && <h1>{currentCollection.name}</h1>}
+          {currentCollection && <h1>{capitalizeFirstLetter(currentCollection.name)}</h1>}
           {currentCollection && currentCollection?.list?.length === 0 && (
             <p>There's no movie yet</p>
           )}
@@ -114,6 +115,7 @@ const DetailCollection = (props) => {
         </div>
       </div>
       <Drawer
+        isMobile={isMobile}
         contentBackground="#ffffff"
         show={showDrawer && showDrawer.deleteConfirmation}
         zIndex={6}

@@ -39,7 +39,7 @@ const Confirmation = ({
 				`}
 			`}
 		</style>
-		<style jsx>
+		<style jsx="true">
 			{`
 				.drawer-type-confirmation-filter {
 					position: fixed;

@@ -36,7 +36,7 @@ const Type2 = ({
 				`}
 			`}
 		</style>
-		<style jsx>
+		<style jsx="true">
 			{`
 				.drawer-mobile-type-2 {
 					position: fixed;

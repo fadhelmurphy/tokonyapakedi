@@ -4,10 +4,9 @@ import ProductCard from "../../components/productcard";
 export default function Mobile({ title = "", data = [], ...props }) {
   return (
     <>
-      <div className="grid">
-        <div className="col-12">
+        <div className="section">
           <div className="head">
-            <span className="title">{title}</span>
+            <h1 className="title">{title}</h1>
           </div>
           <div className="content">
             <div className="child-list-products-mobile">
@@ -19,9 +18,15 @@ export default function Mobile({ title = "", data = [], ...props }) {
             </div>
           </div>
         </div>
-      </div>
-      <style jsx>
+      <style jsx="true">
         {`
+        .section {
+            background: #fff;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 20px;
+        }
           .child-list-products-mobile {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
