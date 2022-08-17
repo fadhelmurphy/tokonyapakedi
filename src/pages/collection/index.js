@@ -179,7 +179,7 @@ const Collection = (props) => {
             }
           }
         }}
-        onBack={() => {
+        onHide={() => {
           handleShowDrawer("addCollection", false);
         }}
         type="type-1"

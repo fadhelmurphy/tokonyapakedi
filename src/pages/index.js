@@ -119,14 +119,14 @@ const Home = (props) => {
         onHide={() => {
           handleShowDrawer("listCollection", false);
         }}
+        onBack={!isMobile ? () => {
+          handleShowDrawer("listCollection", false);
+        } : null}
         onSave={() => {
           setFormNewCollection(undefined);
           handleShowDrawer("listCollection", false);
           handleShowDrawer("addCollection", true);
         }}
-        onBack={!isMobile ? () => {
-          handleShowDrawer("listCollection", false);
-        } : null}
         onSelect={() => {
           const selected = state?.collection?.AllCollection.filter(
             (item) => item.selected
@@ -334,7 +334,11 @@ const Home = (props) => {
             }
           }
         }}
-        onBack={() => {
+        onBack={!isMobile ? () => {
+          handleShowDrawer("listCollection", true);
+          handleShowDrawer("addCollection", false);
+        }: null}
+        onHide={() => {
           handleShowDrawer("listCollection", true);
           handleShowDrawer("addCollection", false);
         }}

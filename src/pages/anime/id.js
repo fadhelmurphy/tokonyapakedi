@@ -314,7 +314,11 @@ const Detail = (props) => {
             }
           }
         }}
-        onBack={() => {
+        onBack={!isMobile ? () => {
+          handleShowDrawer("listCollection", true);
+          handleShowDrawer("addCollection", false);
+        } : null}
+        onHide={() => {
           handleShowDrawer("listCollection", true);
           handleShowDrawer("addCollection", false);
         }}
