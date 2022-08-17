@@ -106,6 +106,7 @@ const Home = (props) => {
         )}
         {result && result.pageInfo && (
           <Pagination
+            isMobile={isMobile}
             page={result?.pageInfo?.currentPage}
             total_page={result?.pageInfo?.lastPage}
             update_page={(e) => HandleLoadMore(e)}
