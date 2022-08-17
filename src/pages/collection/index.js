@@ -188,9 +188,9 @@ const Collection = (props) => {
         onHide={() => {
           handleShowDrawer("addCollection", false);
         }}
-        onBack={() => {
-          handleShowDrawer("addCollection", false);
-        }}
+        // onBack={() => {
+        //   handleShowDrawer("addCollection", false);
+        // }}
         type="type-1"
         saveTitle="SUBMIT"
       >
