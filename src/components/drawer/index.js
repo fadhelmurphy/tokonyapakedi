@@ -44,6 +44,7 @@ Drawer.propTypes = {
 	onSave: PropTypes.func,
 	isEdit: PropTypes.bool,
 	width: PropTypes.string,
+	onSelect: PropTypes.func,
 };
 
 Drawer.defaultProps = {

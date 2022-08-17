@@ -26,7 +26,7 @@ const Template = [
 ];
 
 const Mobile = ({
-	type, show, title, children, zIndex, contentBackground, saveTitle, onBack, onHide, onReset, onSave, isEdit, message, width,
+	type, show, title, children, zIndex, contentBackground, saveTitle, onBack, onHide, onReset, onSave, isEdit, message, width, onSelect,
 }) => (
 	Template.filter((item) => item.id === type).map((style, idx) => (
 		<style.component
@@ -45,6 +45,7 @@ const Mobile = ({
 			isEdit={isEdit}
 			message={message}
 			width={width}
+			onSelect={onSelect}
 		/>
 	))
 );
@@ -64,6 +65,7 @@ Mobile.propTypes = {
 	onReset: PropTypes.func,
 	onSave: PropTypes.func,
 	width: PropTypes.string,
+	onSelect: PropTypes.func,
 };
 
 export default Mobile;

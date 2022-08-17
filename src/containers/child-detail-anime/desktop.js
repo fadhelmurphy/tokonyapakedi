@@ -28,7 +28,7 @@ export default function Desktop({onAdd = () => {}, ...props }) {
             </div>
             <div className="col-8">
               <span className="title">
-                <h1>{english}</h1>
+                <h1>{english || romaji}</h1>
               </span>
               <span className="format">
                 <p>Format : <b>{format}</b></p>
@@ -84,7 +84,7 @@ export default function Desktop({onAdd = () => {}, ...props }) {
             justify-content: center;
             width: 100%;
             height: 35px;
-            background: #000;
+            background: #1B8884;
             text-decoration: none;
             color: #fff;
             margin: 10px 0 0 0;

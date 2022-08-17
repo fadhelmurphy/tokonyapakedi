@@ -9,7 +9,7 @@ import Button from "../../button";
 import React from 'react';
 
 const Type1 = ({
-	show, title, children, zIndex, contentBackground, saveTitle, onBack, onHide, onReset, onSave,
+	show, title, children, zIndex, contentBackground, saveTitle, onBack, onHide, onReset, onSave, onSelect,
 }) => (
 	<div className={`drawer-mobile-type-1 ${show ? "show" : ""}`}>
 		<div className="head">
@@ -40,10 +40,17 @@ const Type1 = ({
 			{children}
 		</div>
 		{
-			typeof onSave === "function" && (
+			typeof onSave === "function" && typeof onSelect !== "function" ? (
 				<div className="footer-btn">
 					<Button block size="medium" variant="primary" font_family="Poppins" font_weight="500" on_click={onSave}>{saveTitle}</Button>
 				</div>
+			)
+			: (
+				<div className="footer-btn">
+							<Button block margin="0 0 15px" color="#000" size="medium" variant="secondary" font_family="Poppins" font_weight="500" on_click={onHide}>Cancel</Button>
+							<Button block margin="0 0 15px" color="#000" size="medium" variant="secondary" font_family="Poppins" font_weight="500" on_click={onSave}>{saveTitle}</Button>
+							<Button block margin="0 0 15px" size="medium" variant="primary" font_family="Poppins" font_weight="500" on_click={onSelect}>Select</Button>
+					</div>
 			)
 		}
 		<style>
@@ -107,7 +114,7 @@ const Type1 = ({
 					cursor: pointer
 				}
 				.drawer-mobile-type-1 .content {
-					height: 94vh;
+					height: 75vh;
 					overflow-y: scroll;
 					box-sizing: border-box;
 					padding-bottom: ${typeof onSave === "function" ? "70px" : "0"};

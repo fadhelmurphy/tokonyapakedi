@@ -8,6 +8,9 @@ import { Input } from "../../components/form";
 import { useNavigate, useParams } from "react-router-dom";
 const Button = React.lazy(() => import("../../components/button"));
 const Drawer = React.lazy(() => import("../../components/drawer"));
+const CollectionCard = React.lazy(() =>
+  import("../../components/collectioncard")
+);
 const ChildDetailAnime = React.lazy(() =>
   import("../../containers/child-detail-anime")
 );
@@ -18,6 +21,7 @@ const Detail = (props) => {
   const {
     state,
     getOne,
+    getSubOne,
     deleteAll,
     create,
     updateOne,
@@ -101,22 +105,36 @@ const Detail = (props) => {
           handleShowDrawer("listCollection", false);
           handleShowDrawer("addCollection", true);
         }}
-        onBack={() => {
-          handleShowDrawer("listCollection", false);
-        }}
         onSelect={() => {
           const selected = state?.collection?.AllCollection.filter(
             (item) => item.selected
           );
           const name = selected.map((item) => item.name.toLowerCase());
-          selected?.length > 0 && createSubOne({ name, item: selectedAnime });
-          updateSelectedCollection(
-            state?.collection?.AllCollection.map((item) => {
-              item.selected = false;
-              return item;
-            })
-          );
-          handleShowDrawer("listCollection", false);
+          let canAdd = [];
+          name.map((thename) => {
+            const get = getSubOne(thename, selectedAnime.id);
+            if (get) {
+              canAdd.push(thename);
+            }
+          });
+          if (canAdd.length > 0) {
+            canAdd.map((item) => {
+              alert(
+                `${
+                  selectedAnime.title.english || selectedAnime.title.romaji
+                } already added to ${item}, please select another collection`
+              );
+            });
+          } else {
+            selected?.length > 0 && createSubOne({ name, item: selectedAnime });
+            updateSelectedCollection(
+              state?.collection?.AllCollection.map((item) => {
+                item.selected = false;
+                return item;
+              })
+            );
+            handleShowDrawer("listCollection", false);
+          }
         }}
         type="type-1"
         saveTitle="ADD NEW COLLECTION"
@@ -125,86 +143,25 @@ const Detail = (props) => {
           {state?.collection?.AllCollection?.length === 0 && (
             <p>There's no collection yet</p>
           )}
-          {state?.collection?.AllCollection?.map((item, idx) => (
-            <div
-              key={idx}
-              className={`collection-card${item.selected ? " active" : ""}`}
-            >
-              <div className="collection-card-content">
-                <a href={`/collection/${item.name}`}>
-                  <h3>{item.name}</h3>
-                </a>
-              </div>
-              <div className="collection-card-footer">
-                <div className="action">
-                  <Button
-                    color="#000"
-                    size="medium"
-                    variant="primary"
-                    font_family="Poppins"
-                    font_weight="500"
-                    on_click={() => {
-                      HandleChooseCollection({
-                        key: idx,
-                        selected: item.selected,
-                      });
-                    }}
-                  >
-                    Choose
-                  </Button>
-                  <Button
-                    color="#000"
-                    size="medium"
-                    variant="secondary"
-                    font_family="Poppins"
-                    font_weight="500"
-                    on_click={() => {
-                      HandleGetOneCollection(item.name);
-                      handleShowDrawer("detailCollection", true);
-                    }}
-                  >
-                    INFO
-                  </Button>
-                  <Button
-                    color="#000"
-                    size="medium"
-                    variant="secondary"
-                    font_family="Poppins"
-                    font_weight="500"
-                    on_click={() => {
-                        window.location = `${process.env.REACT_APP_BASEURL}/collection/${item?.name}`;
-                    }}
-                  >
-                    DETAILS
-                  </Button>
-                  <Button
-                    color="#000"
-                    size="medium"
-                    variant="secondary"
-                    font_family="Poppins"
-                    font_weight="500"
-                    on_click={() => {
-                      HandleGetOneCollection(item.name);
-                      handleShowDrawer("editCollection", true);
-                      setFormNewCollection({ name: item.name });
-                    }}
-                  >
-                    EDIT
-                  </Button>
-                  <Button
-                    color="#000"
-                    size="medium"
-                    variant="secondary"
-                    font_family="Poppins"
-                    font_weight="500"
-                    on_click={() => deleteOne(item.name)}
-                  >
-                    DELETE
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
+          <CollectionCard
+            data={state?.collection?.AllCollection}
+            onChoose={({ key, selected }) =>
+              HandleChooseCollection({
+                key,
+                selected,
+              })
+            }
+            onInfo={(val) => {
+              HandleGetOneCollection(val.name);
+              handleShowDrawer("detailCollection", true);
+            }}
+            onEdit={(val) => {
+              HandleGetOneCollection(val.name);
+              handleShowDrawer("editCollection", true);
+              setFormNewCollection({ name: val.name });
+            }}
+            onDelete={(val) => deleteOne(val.name)}
+          />
         </div>
       </Drawer>
       <Drawer
@@ -212,10 +169,6 @@ const Detail = (props) => {
         contentBackground="#ffffff"
         title={currentCollection.name}
         show={showDrawer && showDrawer.detailCollection}
-        onHide={() => {
-          handleShowDrawer("listCollection", false);
-          handleShowDrawer("detailCollection", false);
-        }}
         onSave={() => {
           handleShowDrawer("detailCollection", false);
           handleShowDrawer("listCollection", true);
@@ -228,9 +181,7 @@ const Detail = (props) => {
         saveTitle="ADD NEW COLLECTION"
       >
         <div className="collection-list">
-          {currentCollection?.list?.length === 0 && (
-            <p>There's no collection yet</p>
-          )}
+          {currentCollection?.list?.length === 0 && <p>There's no movie yet</p>}
           {currentCollection?.list?.map((item, idx) => (
             <div
               key={idx}
@@ -292,8 +243,11 @@ const Detail = (props) => {
                     variant="secondary"
                     font_family="Poppins"
                     font_weight="500"
-                    on_click={() => {deleteSubOne(currentCollection.name, item.id);handleShowDrawer("detailCollection", false);
-                    handleShowDrawer("listCollection", true);}}
+                    on_click={() => {
+                      deleteSubOne(currentCollection.name, item.id);
+                      handleShowDrawer("detailCollection", false);
+                      handleShowDrawer("listCollection", true);
+                    }}
                   >
                     DELETE
                   </Button>
@@ -308,10 +262,6 @@ const Detail = (props) => {
         contentBackground="#ffffff"
         title="Edit Collection"
         show={showDrawer && showDrawer.editCollection}
-        onHide={() => {
-          handleShowDrawer("listCollection", false);
-          handleShowDrawer("editCollection", false);
-        }}
         onSave={() => {
           if (!isNotValid) {
             handleShowDrawer("editCollection", false);
@@ -345,10 +295,6 @@ const Detail = (props) => {
         contentBackground="#ffffff"
         title="New Collection"
         show={showDrawer && showDrawer.addCollection}
-        onHide={() => {
-          handleShowDrawer("listCollection", false);
-          handleShowDrawer("addCollection", false);
-        }}
         onSave={() => {
           if (!isNotValid) {
             const isCollectionExist = getOne(formNewCollection?.name);

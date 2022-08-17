@@ -24,6 +24,7 @@ const Secondary = (props) => (
           outline: none;
           -webkit-appearance: none;
           padding: ${props.padding};
+          margin: ${props.margin}
         }
         .fdn-button-${props.variant}-${props.id_element}.disabled {
           background-color: transparent;

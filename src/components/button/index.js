@@ -45,6 +45,7 @@ const Button = ({
   children,
   size,
   on_click,
+  margin,
 }) => {
   const props = {
     id_element: id_element || `id-btn-1`,
@@ -58,6 +59,7 @@ const Button = ({
     border_radius : border_radius || `2px`,
     color: color,
     padding: padding || `0 10px`,
+    margin: margin || `0px`,
     children: children,
     size: size || `medium`,
     on_click: on_click || (() => {}), 

@@ -26,6 +26,7 @@ const Primary = (props) => {
           outline: none;
           -webkit-appearance: none;
           padding: ${props.padding};
+          margin: ${props.margin}
         }
         .fdn-button-${props.variant}-${props.id_element}.disabled {
           background-color: #F0F3F7;
