@@ -61,9 +61,15 @@ const Context = ({ children }) => {
     });
   };
   const deleteSubOne = (name, id) => {
+    const res = state.collection.AllCollection.map((item)=>{
+      if(item.name === name){
+        return {...item, list: item.list.filter((childItem) => childItem.id !== id)}
+      }
+      return item;
+    })
     dispatch({
       type: "DELETE_ONE_COLLECTION",
-      payload: state.collection.AllCollection.filter((item) => item.name !== name).filter((item) => item.id !== id),
+      payload: res,
     });
   };
   const updateAll = () => {};

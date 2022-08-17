@@ -127,7 +127,6 @@ const Home = (props) => {
             (item) => item.selected
           );
           const name = selected.map((item) => item.name.toLowerCase());
-          console.log(selectedAnime, "selectedAnime");
           selected?.length > 0 && createSubOne({ name, item: selectedAnime });
           updateSelectedCollection(
             state?.collection?.AllCollection.map((item) => {

@@ -22,6 +22,7 @@ const Detail = (props) => {
     create,
     updateOne,
     deleteOne,
+    deleteSubOne,
     createSubOne,
     updateSelectedCollection,
   } = props;
@@ -108,7 +109,6 @@ const Detail = (props) => {
             (item) => item.selected
           );
           const name = selected.map((item) => item.name.toLowerCase());
-          console.log(selectedAnime, "selectedAnime");
           selected?.length > 0 && createSubOne({ name, item: selectedAnime });
           updateSelectedCollection(
             state?.collection?.AllCollection.map((item) => {
@@ -172,8 +172,7 @@ const Detail = (props) => {
                     font_family="Poppins"
                     font_weight="500"
                     on_click={() => {
-                      HandleGetOneCollection(item.name);
-                      handleShowDrawer("detailCollection", true);
+                        window.location = `${process.env.REACT_APP_BASEURL}/collection/${item?.name}`;
                     }}
                   >
                     DETAILS
@@ -293,7 +292,8 @@ const Detail = (props) => {
                     variant="secondary"
                     font_family="Poppins"
                     font_weight="500"
-                    on_click={() => deleteOne(item.name)}
+                    on_click={() => {deleteSubOne(currentCollection.name, item.id);handleShowDrawer("detailCollection", false);
+                    handleShowDrawer("listCollection", true);}}
                   >
                     DELETE
                   </Button>
