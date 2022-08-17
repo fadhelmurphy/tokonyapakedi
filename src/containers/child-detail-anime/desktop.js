@@ -8,6 +8,8 @@ export default function Desktop({onAdd = () => {}, ...props }) {
     episodes,
     status,
     studios,
+    genres,
+    averageScore,
   } = props;
   return (
     <>
@@ -20,7 +22,7 @@ export default function Desktop({onAdd = () => {}, ...props }) {
           </div>
           <div className="content grid">
             <div className="col-4">
-              <div className="img=detail">
+              <div className="img-detail">
                 <img src={large} alt="image detail" />
               </div>
             </div>
@@ -37,6 +39,15 @@ export default function Desktop({onAdd = () => {}, ...props }) {
               <span className="status">
                 <p>Status : <b>{status}</b></p>
               </span>
+              <span className="genres">
+                <p>Genre : <b>
+                {
+                  // Checks whether genre has true in order to display
+                  genres && genres.length >= 1
+                    ? genres.join(", ")
+                    : "Unknown"
+                }</b></p>
+              </span>
               <span className="studios">
               <p>Studio : <b>
                   {
@@ -48,6 +59,9 @@ export default function Desktop({onAdd = () => {}, ...props }) {
                         : studios.nodes[0].name
                       : "Unknown"
                   }</b></p>
+              </span>
+              <span className="rating">
+                <p>Rating : <b>{averageScore}%</b></p>
               </span>
               <div onClick={()=>onAdd(props)} className="action-card"><p>ADD</p></div>
             </div>
@@ -85,6 +99,14 @@ export default function Desktop({onAdd = () => {}, ...props }) {
             overflow: hidden;
         }
         .header .img-banner img {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+        }
+        .img-detail {
+            padding: 20px;
+        }
+        .img-detail img {
             object-fit: cover;
             height: 100%;
             width: 100%;

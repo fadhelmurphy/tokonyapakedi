@@ -24,6 +24,8 @@ import { useQuery, gql } from "@apollo/client";
           }
           type
           genres
+          episodes
+          averageScore
         }
       }
     }

@@ -10,7 +10,13 @@ const Input = ({
 	onChange,
 	validation,
 	ifNotValid
-}) => (
+}) => {
+	let customError = "";
+	if(value.match(/[^a-zA-Z]/g, "")){
+		value = value.replace(/[^a-zA-Z]/g, "");
+		customError = "Name must be Alphabet & Unique";
+	}
+	return (
 	<div className="form-input-bs">
 		{ifNotValid(validation)}
 		{
@@ -20,6 +26,7 @@ const Input = ({
 		}
 		<input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} required />
 		{validation && <p className="error">{`${label} must be filled`}</p>}
+		{!validation && customError.length > 0 && <p className="error">{customError}</p>}
 		<style jsx>
 			{`
 				.form-input-bs {
@@ -64,7 +71,7 @@ const Input = ({
 			`}
 		</style>
 	</div>
-);
+)};
 
 Input.propTypes = {
 	value: PropTypes.any,

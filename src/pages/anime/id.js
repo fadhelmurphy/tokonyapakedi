@@ -40,7 +40,7 @@ const Detail = (props) => {
     addCollection: false,
     editCollection: false,
   });
-  
+
   const [formNewCollection, setFormNewCollection] = useState();
   const [currentCollection, setCurrentCollection] = useState({});
   const HandleChooseCollection = (params) => {
@@ -57,7 +57,7 @@ const Detail = (props) => {
 
     updateSelectedCollection(updatedList);
   };
-  
+
   const HandleGetOneCollection = (name) => {
     setCurrentCollection(getOne(name));
   };
@@ -66,9 +66,9 @@ const Detail = (props) => {
     setSelectedAnime(val);
     handleShowDrawer("listCollection", true);
   };
-  
+
   const [isNotValid, setNotValid] = useState(false);
-  
+
   const HandleChangeSelect = async (opt, val) => {
     if (opt === "name") {
       setFormNewCollection((prev) => ({
@@ -77,11 +77,17 @@ const Detail = (props) => {
       }));
     }
   };
-  return <>
-  {result && <ChildDetailAnime isMobile={isMobile} {...result} onAdd={(val)=>onAdd(val)} />}
-  
-  
-  <Drawer
+  return (
+    <>
+      {result && (
+        <ChildDetailAnime
+          isMobile={isMobile}
+          {...result}
+          onAdd={(val) => onAdd(val)}
+        />
+      )}
+
+      <Drawer
         isMobile={isMobile}
         contentBackground="#ffffff"
         title="Your Collection"
@@ -125,7 +131,9 @@ const Detail = (props) => {
               className={`collection-card${item.selected ? " active" : ""}`}
             >
               <div className="collection-card-content">
-                <h3>{item.name}</h3>
+                <a href={`/collection/${item.name}`}>
+                  <h3>{item.name}</h3>
+                </a>
               </div>
               <div className="collection-card-footer">
                 <div className="action">
@@ -155,7 +163,20 @@ const Detail = (props) => {
                       handleShowDrawer("detailCollection", true);
                     }}
                   >
-                    SEE LIST
+                    INFO
+                  </Button>
+                  <Button
+                    color="#000"
+                    size="medium"
+                    variant="secondary"
+                    font_family="Poppins"
+                    font_weight="500"
+                    on_click={() => {
+                      HandleGetOneCollection(item.name);
+                      handleShowDrawer("detailCollection", true);
+                    }}
+                  >
+                    DETAILS
                   </Button>
                   <Button
                     color="#000"
@@ -208,7 +229,6 @@ const Detail = (props) => {
         saveTitle="ADD NEW COLLECTION"
       >
         <div className="collection-list">
-            
           {currentCollection?.list?.length === 0 && (
             <p>There's no collection yet</p>
           )}
@@ -218,7 +238,40 @@ const Detail = (props) => {
               className={`collection-card${item.selected ? " active" : ""}`}
             >
               <div className="collection-card-content">
-                <h3>{item.title?.english || item.title?.romaji}</h3>
+                <div className="grid">
+                  <div className="col-4">
+                    <img src={item.coverImage.large} alt="image detail" />
+                  </div>
+                  <div className="col-8">
+                    <h2>{item.title?.english || item.title?.romaji}</h2>
+
+                    <span className="rating">
+                      <p>
+                        Rating : <b>{item.averageScore}%</b>
+                      </p>
+                    </span>
+
+                    <span className="genres">
+                      <p>
+                        Genre :{" "}
+                        <b>
+                          {
+                            // Checks whether genre has true in order to display
+                            item.genres && item.genres.length >= 1
+                              ? item.genres.join(", ")
+                              : "Unknown"
+                          }
+                        </b>
+                      </p>
+                    </span>
+
+                    <span className="episodes">
+                      <p>
+                        Episodes : <b>{item.episodes}</b>
+                      </p>
+                    </span>
+                  </div>
+                </div>
               </div>
               <div className="collection-card-footer">
                 <div className="action">
@@ -229,7 +282,7 @@ const Detail = (props) => {
                     font_family="Poppins"
                     font_weight="500"
                     on_click={() => {
-                      window.location = `${process.env.REACT_APP_BASEURL}/anime/${item?.id}`
+                      window.location = `${process.env.REACT_APP_BASEURL}/anime/${item?.id}`;
                     }}
                   >
                     SEE DETAIL
@@ -298,13 +351,18 @@ const Detail = (props) => {
         }}
         onSave={() => {
           if (!isNotValid) {
-            handleShowDrawer("addCollection", false);
-            handleShowDrawer("listCollection", true);
-            create({
-              name: formNewCollection?.name,
-              list: [],
-              selected: false,
-            });
+            const isCollectionExist = getOne(formNewCollection?.name);
+            if (!isCollectionExist) {
+              handleShowDrawer("addCollection", false);
+              handleShowDrawer("listCollection", true);
+              create({
+                name: formNewCollection?.name,
+                list: [],
+                selected: false,
+              });
+            } else {
+              alert("Name Already exist! Please choose another name");
+            }
           }
         }}
         onBack={() => {
@@ -325,7 +383,7 @@ const Detail = (props) => {
           />
         </div>
       </Drawer>
-      
+
       <style jsx>
         {`
           .collection-card {
@@ -352,6 +410,21 @@ const Detail = (props) => {
             justify-content: space-between;
             padding: 15px;
           }
+          .collection-card-content a {
+            text-decoration: none;
+            color: #000;
+          }
+          .collection-card-content .grid .col-8 {
+            align-self: center;
+          }
+          .collection-card-content .grid .col-4 {
+            padding: 10px;
+          }
+          .collection-card-content .grid .col-4 img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+          }
           .collection-card-footer {
             display: flex;
             align-items: center;
@@ -370,6 +443,7 @@ const Detail = (props) => {
           }
         `}
       </style>
-  </>;
+    </>
+  );
 };
 export default withContext(Detail);

@@ -49,6 +49,7 @@
   grid-template-columns: repeat(12, 1fr);
   grid-gap: 2px;
   counter-reset: div;
+  width: 100%;
 }
 
 .grid div[class]:after {

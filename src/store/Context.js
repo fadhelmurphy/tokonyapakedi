@@ -43,7 +43,8 @@ const Context = ({ children }) => {
     });
   };
   const getOne = (name) => {
-    return state.collection.AllCollection.filter((item) => item.name === name)[0];
+    const get = state.collection.AllCollection.filter((item) => item.name.toLowerCase() === name.toLowerCase())
+    return get.length > 0 ? get[0] : false;
   };
   const getSubOne = (name, id) => {
     return state.collection.AllCollection.filter((item) => item.name === name).filter((item) => item.id === id)[0];
