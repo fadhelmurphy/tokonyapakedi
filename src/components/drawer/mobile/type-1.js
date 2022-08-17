@@ -9,7 +9,7 @@ import Button from "../../button";
 import React from 'react';
 
 const Type1 = ({
-	show, title, children, zIndex, contentBackground, saveTitle, onBack, onHide, onReset, onSave,
+	show, title, children, zIndex, contentBackground, saveTitle, onBack, onHide, onReset, onSave, onSelect
 }) => (
 	<div className={`drawer-mobile-type-1 ${show ? "show" : ""}`}>
 		<div className="head">
@@ -48,6 +48,7 @@ const Type1 = ({
 			: (
 				<div className="footer-btn">
 							<Button block margin="0 0 15px" color="#000" size="medium" variant="secondary" font_family="Poppins" font_weight="500" on_click={onBack||onHide}>Cancel</Button>
+							{typeof onSelect === "function" && (<Button block margin="0 0 15px" size="medium" variant="secondary" font_family="Poppins" font_weight="500" on_click={onSelect}>ADD NEW COLLECTION</Button>)}
 							<Button block margin="0 0 15px" size="medium" variant="primary" font_family="Poppins" font_weight="500" on_click={onSave}>{saveTitle}</Button>
 					</div>
 			)

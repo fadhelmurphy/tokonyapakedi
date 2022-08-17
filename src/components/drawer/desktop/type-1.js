@@ -17,6 +17,7 @@ const Type3 = ({
   onHide,
   onSave,
   saveTitle,
+  onSelect,
   // isEdit,
   onBack,
 }) => (
@@ -42,7 +43,7 @@ const Type3 = ({
       {
         typeof onSave === "function" ? (
           <div className="footer-btn grid">
-            <div className="col-6">
+            <div className={typeof onSelect === "function" ? "col-4" : "col-6"}>
               <Button
                 block
                 color="#000"
@@ -50,12 +51,27 @@ const Type3 = ({
                 variant="secondary"
                 font_family="Poppins"
                 font_weight="500"
-                on_click={onBack}
+                on_click={onBack||onHide}
               >
                 Cancel
               </Button>
             </div>
-            <div className="col-6">
+            {typeof onSelect === "function" && (
+              <div className="col-4">
+                <Button
+                  block
+                  color="#000"
+                  size="medium"
+                  variant="secondary"
+                  font_family="Poppins"
+                  font_weight="500"
+                  on_click={onSelect}
+                >
+                  ADD NEW COLLECTION
+                </Button>
+              </div>
+            )}
+            <div className={typeof onSelect === "function" ? "col-4" : "col-6"}>
               <Button
                 block
                 size="medium"

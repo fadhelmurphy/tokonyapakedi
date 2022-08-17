@@ -103,6 +103,11 @@ const Detail = (props) => {
         onBack={!isMobile ? () => {
             handleShowDrawer("listCollection", false);
           } : null}
+        onSelect={()=>{
+            setFormNewCollection(undefined);
+            handleShowDrawer("listCollection", false);
+            handleShowDrawer("addCollection", true);
+        }}
         onSave={() => {
           const selected = state?.collection?.AllCollection.filter(
             (item) => item.selected
@@ -225,6 +230,48 @@ const Detail = (props) => {
               </div>
             </div>
           ))}
+        </div>
+      </Drawer>
+      <Drawer
+        isMobile={isMobile}
+        contentBackground="#ffffff"
+        title="New Collection"
+        show={showDrawer && showDrawer.addCollection}
+        onSave={() => {
+          if (!isNotValid) {
+            const isCollectionExist = getOne(formNewCollection?.name);
+            if (!isCollectionExist) {
+              create({
+                name: formNewCollection?.name,
+                list: [],
+                selected: false,
+              });
+              handleShowDrawer("addCollection", false);
+              handleShowDrawer("listCollection", true);
+            } else {
+              alert("Name Already exist! Please choose another name");
+            }
+          }
+        }}
+        // onHide={() => {
+        //   handleShowDrawer("addCollection", false);
+        // }}
+        onBack={() => {
+          handleShowDrawer("addCollection", false);
+          handleShowDrawer("listCollection", true);
+        }}
+        type="type-1"
+        saveTitle="SUBMIT"
+      >
+        <div className="collection-list">
+          <Input
+            label="Name"
+            value={formNewCollection?.name || ""}
+            onChange={(val) => HandleChangeSelect("name", val)}
+            validation={!formNewCollection?.name?.length > 0}
+            ifNotValid={(val) => setNotValid(val)}
+            placeholder="Example : MEME"
+          />
         </div>
       </Drawer>
 
