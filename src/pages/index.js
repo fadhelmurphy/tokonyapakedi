@@ -8,15 +8,20 @@ import { Input } from "../components/form";
 const Button = React.lazy(() => import("../components/button"));
 const Drawer = React.lazy(() => import("../components/drawer"));
 const Pagination = React.lazy(() => import("../components/pagination"));
+const CollectionCard = React.lazy(() =>
+  import("../components/collectioncard")
+);
 
 const Home = (props) => {
   const {
     state,
     getOne,
+    getSubOne,
     deleteAll,
     create,
     updateOne,
     deleteOne,
+    deleteSubOne,
     createSubOne,
     updateSelectedCollection,
   } = props;
@@ -83,7 +88,7 @@ const Home = (props) => {
   };
 
   // console.log(selectedAnime, "selectedAnime")
-  console.log(state?.collection?.AllCollection, "JOSS");
+  // console.log(state?.collection?.AllCollection, "JOSS");
 
   return (
     <>
@@ -119,22 +124,39 @@ const Home = (props) => {
           handleShowDrawer("listCollection", false);
           handleShowDrawer("addCollection", true);
         }}
-        onBack={() => {
+        onBack={!isMobile ? () => {
           handleShowDrawer("listCollection", false);
-        }}
+        } : null}
         onSelect={() => {
           const selected = state?.collection?.AllCollection.filter(
             (item) => item.selected
           );
           const name = selected.map((item) => item.name.toLowerCase());
-          selected?.length > 0 && createSubOne({ name, item: selectedAnime });
-          updateSelectedCollection(
-            state?.collection?.AllCollection.map((item) => {
-              item.selected = false;
-              return item;
-            })
-          );
-          handleShowDrawer("listCollection", false);
+          let canAdd = [];
+          name.map((thename) => {
+            const get = getSubOne(thename, selectedAnime.id);
+            if (get) {
+              canAdd.push(thename);
+            }
+          });
+          if (canAdd.length > 0) {
+            canAdd.map((item) => {
+              alert(
+                `${
+                  selectedAnime.title.english || selectedAnime.title.romaji
+                } already added to ${item}, please select another collection`
+              );
+            });
+          } else {
+            selected?.length > 0 && createSubOne({ name, item: selectedAnime });
+            updateSelectedCollection(
+              state?.collection?.AllCollection.map((item) => {
+                item.selected = false;
+                return item;
+              })
+            );
+            handleShowDrawer("listCollection", false);
+          }
         }}
         type="type-1"
         saveTitle="ADD NEW COLLECTION"
@@ -143,30 +165,100 @@ const Home = (props) => {
           {state?.collection?.AllCollection?.length === 0 && (
             <p>There's no collection yet</p>
           )}
-          {state?.collection?.AllCollection?.map((item, idx) => (
+          <CollectionCard
+            type="detail"
+            data={state?.collection?.AllCollection}
+            onChoose={({ key, selected }) =>
+              HandleChooseCollection({
+                key,
+                selected,
+              })
+            }
+            onInfo={(val) => {
+              HandleGetOneCollection(val.name);
+              handleShowDrawer("detailCollection", true);
+            }}
+            onEdit={(val) => {
+              HandleGetOneCollection(val.name);
+              handleShowDrawer("editCollection", true);
+              setFormNewCollection({ name: val.name });
+            }}
+            onDelete={(val) => deleteOne(val.name)}
+          />
+        </div>
+      </Drawer>
+      <Drawer
+        isMobile={isMobile}
+        contentBackground="#ffffff"
+        title={currentCollection.name}
+        show={showDrawer && showDrawer.detailCollection}
+        onSave={() => {
+          handleShowDrawer("detailCollection", false);
+          handleShowDrawer("listCollection", true);
+        }}
+        onBack={() => {
+          handleShowDrawer("listCollection", true);
+          handleShowDrawer("detailCollection", false);
+        }}
+        type="type-1"
+        saveTitle="ADD NEW COLLECTION"
+      >
+        <div className="collection-list">
+          {currentCollection?.list?.length === 0 && <p>There's no movie yet</p>}
+          {currentCollection?.list?.map((item, idx) => (
             <div
               key={idx}
               className={`collection-card${item.selected ? " active" : ""}`}
             >
               <div className="collection-card-content">
-                <h3>{item.name}</h3>
+                <div className="grid">
+                  <div className="col-4">
+                    <img src={item.coverImage.large} alt="image detail" />
+                  </div>
+                  <div className="col-8">
+                    <h2>{item.title?.english || item.title?.romaji}</h2>
+
+                    <span className="rating">
+                      <p>
+                        Rating : <b>{item.averageScore}%</b>
+                      </p>
+                    </span>
+
+                    <span className="genres">
+                      <p>
+                        Genre :{" "}
+                        <b>
+                          {
+                            // Checks whether genre has true in order to display
+                            item.genres && item.genres.length >= 1
+                              ? item.genres.join(", ")
+                              : "Unknown"
+                          }
+                        </b>
+                      </p>
+                    </span>
+
+                    <span className="episodes">
+                      <p>
+                        Episodes : <b>{item.episodes}</b>
+                      </p>
+                    </span>
+                  </div>
+                </div>
               </div>
               <div className="collection-card-footer">
                 <div className="action">
                   <Button
                     color="#000"
                     size="medium"
-                    variant="primary"
+                    variant="secondary"
                     font_family="Poppins"
                     font_weight="500"
                     on_click={() => {
-                      HandleChooseCollection({
-                        key: idx,
-                        selected: item.selected,
-                      });
+                      window.location = `${process.env.REACT_APP_BASEURL}/anime/${item?.id}`;
                     }}
                   >
-                    Choose
+                    SEE DETAIL
                   </Button>
                   <Button
                     color="#000"
@@ -175,33 +267,10 @@ const Home = (props) => {
                     font_family="Poppins"
                     font_weight="500"
                     on_click={() => {
-                      HandleGetOneCollection(item.name);
-                      handleShowDrawer("detailCollection", true);
+                      deleteSubOne(currentCollection.name, item.id);
+                      handleShowDrawer("detailCollection", false);
+                      handleShowDrawer("listCollection", true);
                     }}
-                  >
-                    SEE LIST
-                  </Button>
-                  <Button
-                    color="#000"
-                    size="medium"
-                    variant="secondary"
-                    font_family="Poppins"
-                    font_weight="500"
-                    on_click={() => {
-                      HandleGetOneCollection(item.name);
-                      handleShowDrawer("editCollection", true);
-                      setFormNewCollection({ name: item.name });
-                    }}
-                  >
-                    EDIT
-                  </Button>
-                  <Button
-                    color="#000"
-                    size="medium"
-                    variant="secondary"
-                    font_family="Poppins"
-                    font_weight="500"
-                    on_click={() => deleteOne(item.name)}
                   >
                     DELETE
                   </Button>
@@ -214,34 +283,8 @@ const Home = (props) => {
       <Drawer
         isMobile={isMobile}
         contentBackground="#ffffff"
-        title={currentCollection.name}
-        show={showDrawer && showDrawer.detailCollection}
-        onHide={() => {
-          handleShowDrawer("listCollection", false);
-          handleShowDrawer("detailCollection", false);
-        }}
-        onSave={() => {
-          handleShowDrawer("detailCollection", false);
-          handleShowDrawer("listCollection", true);
-        }}
-        onBack={() => {
-          handleShowDrawer("listCollection", true);
-          handleShowDrawer("detailCollection", false);
-        }}
-        type="type-1"
-        saveTitle="ADD NEW COLLECTION"
-      >
-        <div className="collection-list"></div>
-      </Drawer>
-      <Drawer
-        isMobile={isMobile}
-        contentBackground="#ffffff"
         title="Edit Collection"
         show={showDrawer && showDrawer.editCollection}
-        onHide={() => {
-          handleShowDrawer("listCollection", false);
-          handleShowDrawer("editCollection", false);
-        }}
         onSave={() => {
           if (!isNotValid) {
             handleShowDrawer("editCollection", false);
@@ -275,19 +318,20 @@ const Home = (props) => {
         contentBackground="#ffffff"
         title="New Collection"
         show={showDrawer && showDrawer.addCollection}
-        onHide={() => {
-          handleShowDrawer("listCollection", false);
-          handleShowDrawer("addCollection", false);
-        }}
         onSave={() => {
           if (!isNotValid) {
-            handleShowDrawer("addCollection", false);
-            handleShowDrawer("listCollection", true);
-            create({
-              name: formNewCollection?.name,
-              list: [],
-              selected: false,
-            });
+            const isCollectionExist = getOne(formNewCollection?.name);
+            if (!isCollectionExist) {
+              handleShowDrawer("addCollection", false);
+              handleShowDrawer("listCollection", true);
+              create({
+                name: formNewCollection?.name,
+                list: [],
+                selected: false,
+              });
+            } else {
+              alert("Name Already exist! Please choose another name");
+            }
           }
         }}
         onBack={() => {
@@ -308,6 +352,7 @@ const Home = (props) => {
           />
         </div>
       </Drawer>
+
       <style jsx>
         {`
           .collection-card {
@@ -333,6 +378,21 @@ const Home = (props) => {
             align-items: center;
             justify-content: space-between;
             padding: 15px;
+          }
+          .collection-card-content a {
+            text-decoration: none;
+            color: #000;
+          }
+          .collection-card-content .grid .col-8 {
+            align-self: center;
+          }
+          .collection-card-content .grid .col-4 {
+            padding: 10px;
+          }
+          .collection-card-content .grid .col-4 img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
           }
           .collection-card-footer {
             display: flex;

@@ -49,7 +49,7 @@ const Type1 = ({
 				<div className="footer-btn">
 							<Button block margin="0 0 15px" color="#000" size="medium" variant="secondary" font_family="Poppins" font_weight="500" on_click={onHide}>Cancel</Button>
 							<Button block margin="0 0 15px" color="#000" size="medium" variant="secondary" font_family="Poppins" font_weight="500" on_click={onSave}>{saveTitle}</Button>
-							<Button block margin="0 0 15px" size="medium" variant="primary" font_family="Poppins" font_weight="500" on_click={onSelect}>Select</Button>
+							<Button block margin="0 0 15px" size="medium" variant="primary" font_family="Poppins" font_weight="500" on_click={onSelect}>Submit</Button>
 					</div>
 			)
 		}

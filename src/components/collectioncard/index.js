@@ -1,10 +1,24 @@
 import React from "react";
-import Desktop from "./desktop";
-import Mobile from "./mobile";
+import Detail from "./detail";
+import Default from "./default";
 
-export default function CollectionCard({ isMobile, ...props }) {
-  if (isMobile) {
-    return <Mobile {...props} />;
-  }
-  return <Desktop {...props} />;
+export default function CollectionCard({ isMobile, type, ...props }) {
+  const Template = [
+    {
+      id: "default",
+      component: Default,
+    },
+    {
+      id: "detail",
+      component: Detail,
+    },
+  ];
+  return Template.filter((item) => item.id === type).map((style, idx) => (
+    <style.component key={String(idx)} {...props}
+    />
+  ))
 }
+
+CollectionCard.defaultProps = {
+  type: "default"
+};

@@ -22,6 +22,7 @@ import { useQuery, gql } from "@apollo/client";
           coverImage {
             large
           }
+          bannerImage
           type
           genres
           episodes

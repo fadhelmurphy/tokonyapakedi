@@ -17,7 +17,6 @@ const ChildDetailAnime = React.lazy(() =>
 
 const Detail = (props) => {
   const router = useParams();
-  const navigate = useNavigate();
   const {
     state,
     getOne,
@@ -144,6 +143,7 @@ const Detail = (props) => {
             <p>There's no collection yet</p>
           )}
           <CollectionCard
+            type="detail"
             data={state?.collection?.AllCollection}
             onChoose={({ key, selected }) =>
               HandleChooseCollection({

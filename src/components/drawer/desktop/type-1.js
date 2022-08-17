@@ -52,7 +52,7 @@ const Type3 = ({
 							<Button block color="#000" size="medium" variant="secondary" font_family="Poppins" font_weight="500" on_click={onSave}>{saveTitle}</Button>
 						</div>
 						<div className="col-4">
-							<Button block size="medium" variant="primary" font_family="Poppins" font_weight="500" on_click={onSelect}>Select</Button>
+							<Button block size="medium" variant="primary" font_family="Poppins" font_weight="500" on_click={onSelect}>Submit</Button>
 						</div>
 					</div>
 					)

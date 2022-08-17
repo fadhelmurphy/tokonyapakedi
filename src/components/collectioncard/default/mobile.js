@@ -1,8 +1,7 @@
 import React from "react";
+const Button = React.lazy(() => import("../../button"));
 
-const Button = React.lazy(() => import("../button"));
-
-export default function Mobile({ data = [], onChoose = () => {}, onInfo = () => {}, onEdit = () => {}, onDelete = () => {} }) {
+export default function Mobile({ data = [], onEdit = () => {}, onDelete = () => {} }) {
   return (
     <>
       {data?.map((item, idx) => (
@@ -12,64 +11,24 @@ export default function Mobile({ data = [], onChoose = () => {}, onInfo = () => 
         >
           <div className="collection-card-content">
             <a href={`/collection/${item.name}`}>
-              <h3>{item.name}</h3>
+              <h2>{item.name}</h2>
             </a>
+            <div className="bannerImage">
+            <a href={`/collection/${item.name}`}>
+              <img src={item.list[0]?.bannerImage || "https://via.placeholder.com/900x200?text=No%20Image%20Found"} alt={item.name}/>
+              </a>
+            </div>
           </div>
           <div className="collection-card-footer">
             <div className="action">
               <Button
                 color="#000"
                 size="medium"
-                variant="primary"
-                font_family="Poppins"
-                font_weight="500"
-                on_click={() => {
-                  // HandleChooseCollection({
-                  //   key: idx,
-                  //   selected: item.selected,
-                  // });
-                  onChoose({
-                    key: idx,
-                    selected: item.selected,
-                  });
-                }}
-              >
-                Choose
-              </Button>
-              <Button
-                color="#000"
-                size="medium"
                 variant="secondary"
                 font_family="Poppins"
                 font_weight="500"
                 on_click={() => {
-                  onInfo(item.name);
-                  // HandleGetOneCollection(item.name);
-                  // handleShowDrawer("detailCollection", true);
-                }}
-              >
-                INFO
-              </Button>
-              <Button
-                color="#000"
-                size="medium"
-                variant="secondary"
-                font_family="Poppins"
-                font_weight="500"
-                on_click={() => {
-                  window.location = `${process.env.REACT_APP_BASEURL}/collection/${item?.name}`;
-                }}
-              >
-                DETAILS
-              </Button>
-              <Button
-                color="#000"
-                size="medium"
-                variant="secondary"
-                font_family="Poppins"
-                font_weight="500"
-                on_click={() => {
-                  onEdit(item.name);
+                  onEdit(item);
                   // HandleGetOneCollection(item.name);
                   // handleShowDrawer("editCollection", true);
                   // setFormNewCollection({ name: item.name });
@@ -85,7 +44,7 @@ export default function Mobile({ data = [], onChoose = () => {}, onInfo = () => 
                 font_weight="500"
                 on_click={() => {
                   // deleteOne(item.name)
-                  onDelete(item.name);
+                  onDelete(item);
                 }}
               >
                 DELETE
@@ -102,27 +61,43 @@ export default function Mobile({ data = [], onChoose = () => {}, onInfo = () => 
           .collection-card.active {
             border: 1px solid #000;
           }
-          .collection-card h4 {
+          .collection-card h2 {
             font-family: "Poppins";
-            font-style: normal;
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 22px;
-            letter-spacing: 0.04em;
             text-transform: capitalize;
-            margin-bottom: 9px;
             display: flex;
             align-items: center;
+            margin: 20px;
           }
           .collection-card-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 15px;
+            position: relative;
           }
           .collection-card-content a {
             text-decoration: none;
-            color: #000;
+            color: #fff;
+            position: absolute;
+            z-index: 4;
+          }
+          .collection-card-content .bannerImage {
+            width: 100%;
+            height: 200px;
+            background: #f2f2f2;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+          }
+          .collection-card-content .bannerImage a {
+            display: block;
+            height: 100%;
+            width: 100%;
+          }
+          .collection-card-content .bannerImage img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
           }
           .collection-card-footer {
             display: flex;

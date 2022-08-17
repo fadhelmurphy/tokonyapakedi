@@ -1,6 +1,5 @@
 import React from "react";
-
-const Button = React.lazy(() => import("../button"));
+const Button = React.lazy(() => import("../../button"));
 
 export default function Desktop({ data = [], onChoose = () => {}, onInfo = () => {}, onEdit = () => {}, onDelete = () => {} }) {
   return (
@@ -18,7 +17,6 @@ export default function Desktop({ data = [], onChoose = () => {}, onInfo = () =>
           <div className="collection-card-footer">
             <div className="action">
               <Button
-                color="#000"
                 size="medium"
                 variant="primary"
                 font_family="Poppins"
