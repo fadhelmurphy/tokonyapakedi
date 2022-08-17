@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { GetRootContext, RootContext, withContext } from "../../store/Context";
 import { _getAll, _getDetail } from "../../helpers/fetchers";
 import ChildListProducts from "../../containers/child-list-products";
 import { ScrollToUp } from "../../helpers/utils";
 // import Pagination from "../components/pagination";
 import { Input } from "../../components/form";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 const Button = React.lazy(() => import("../../components/button"));
 const Drawer = React.lazy(() => import("../../components/drawer"));
 const CollectionCard = React.lazy(() =>
@@ -99,6 +99,9 @@ const Detail = (props) => {
         onHide={() => {
           handleShowDrawer("listCollection", false);
         }}
+        onBack={!isMobile ? () => {
+            handleShowDrawer("listCollection", false);
+          } : null}
         onSave={() => {
           setFormNewCollection(undefined);
           handleShowDrawer("listCollection", false);

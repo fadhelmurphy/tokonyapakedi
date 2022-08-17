@@ -37,7 +37,7 @@ export default function Mobile({onAdd = () => {}, ...props }) {
             justify-content: center;
             width: 100%;
             height: 35px;
-            background: #000;
+            background: #1B8884;
             text-decoration: none;
             color: #fff;
             margin: 10px 0 0 0;

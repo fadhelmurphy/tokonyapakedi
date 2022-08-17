@@ -34,7 +34,7 @@ Drawer.propTypes = {
 	type: PropTypes.string,
 	title: PropTypes.string,
 	message: PropTypes.string,
-	children: PropTypes.any.isRequired,
+	children: PropTypes.any,
 	zIndex: PropTypes.number,
 	contentBackground: PropTypes.string,
 	saveTitle: PropTypes.string,

@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import TypeOne from "./type-1";
 import TypeTwo from "./type-2";
 import React from "react";
+import Confirmation from "./confirmation";
 
 const Template = [
 	{
@@ -17,6 +18,10 @@ const Template = [
 	{
 		id: "type-2",
 		component: TypeTwo,
+	},
+	{
+		id: "confirmation",
+		component: Confirmation,
 	},
 ];
 

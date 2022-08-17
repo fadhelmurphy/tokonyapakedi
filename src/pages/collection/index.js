@@ -33,6 +33,7 @@ const Collection = (props) => {
     detailCollection: false,
     addCollection: false,
     editCollection: false,
+    deleteConfirmation: false,
   });
 
   const [formNewCollection, setFormNewCollection] = useState();
@@ -56,9 +57,9 @@ const Collection = (props) => {
     setCurrentCollection(getOne(name));
   };
 
-  const onAdd = (val) => {
-    setSelectedAnime(val);
-    handleShowDrawer("listCollection", true);
+  const onAdd = () => {
+    setFormNewCollection(undefined);
+    handleShowDrawer("addCollection", true);
   };
 
   const [isNotValid, setNotValid] = useState(false);
@@ -73,10 +74,12 @@ const Collection = (props) => {
   };
   return (
     <>
-      <h1>Collection Page</h1>
-
       <div className="container">
+        <h1>Your Collection</h1>
         <div className="collection-list">
+          <div onClick={() => onAdd()} className="action-card">
+            <p>ADD</p>
+          </div>
           {state?.collection?.AllCollection?.length === 0 && (
             <p>There's no collection yet</p>
           )}
@@ -98,7 +101,10 @@ const Collection = (props) => {
               handleShowDrawer("editCollection", true);
               setFormNewCollection({ name: val.name });
             }}
-            onDelete={(val) => deleteOne(val.name)}
+            onDelete={(val) => {
+              setCurrentCollection(val);
+              handleShowDrawer("deleteConfirmation", true);
+            }}
           />
         </div>
       </div>
@@ -135,8 +141,84 @@ const Collection = (props) => {
           />
         </div>
       </Drawer>
+
+      <Drawer
+        contentBackground="#ffffff"
+        show={showDrawer && showDrawer.deleteConfirmation}
+        zIndex={6}
+        onHide={() => {
+          handleShowDrawer("deleteConfirmation", false);
+          // handleShowDrawer("address", true);
+        }}
+        type="confirmation"
+        message="Are you sure you want to delete this collection?"
+        onSave={() => {
+          deleteOne(currentCollection.name);
+          handleShowDrawer("deleteConfirmation", false);
+          // handleShowDrawer("address", true);
+        }}
+      />
+
+      <Drawer
+        isMobile={isMobile}
+        contentBackground="#ffffff"
+        title="New Collection"
+        show={showDrawer && showDrawer.addCollection}
+        onSave={() => {
+          if (!isNotValid) {
+            const isCollectionExist = getOne(formNewCollection?.name);
+            if (!isCollectionExist) {
+              handleShowDrawer("addCollection", false);
+              create({
+                name: formNewCollection?.name,
+                list: [],
+                selected: false,
+              });
+            } else {
+              alert("Name Already exist! Please choose another name");
+            }
+          }
+        }}
+        onBack={() => {
+          handleShowDrawer("addCollection", false);
+        }}
+        type="type-1"
+        saveTitle="SUBMIT"
+      >
+        <div className="collection-list">
+          <Input
+            label="Name"
+            value={formNewCollection?.name || ""}
+            onChange={(val) => HandleChangeSelect("name", val)}
+            validation={!formNewCollection?.name?.length > 0}
+            ifNotValid={(val) => setNotValid(val)}
+            placeholder="Example : MEME"
+          />
+        </div>
+      </Drawer>
       <style jsx="true">
         {`
+        
+        div.action-card {
+            height: auto;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1;
+            transition: all .5s ease;
+          }
+          div.action-card p {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 35px;
+            background: #1B8884;
+            text-decoration: none;
+            color: #fff;
+            margin: 10px 0 0 0;
+            box-sizing: border-box;
+            cursor: pointer;
+          }
           .collection-list {
             display: grid;
             grid-template-columns: 1fr;

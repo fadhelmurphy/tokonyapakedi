@@ -47,7 +47,7 @@ const Context = ({ children }) => {
     return get.length > 0 ? get[0] : false;
   };
   const getSubOne = (name, id) => {
-    const get = state.collection.AllCollection.filter((item) => item.name === name)[0].list.filter((item) => item.id === id);
+    const get = state.collection.AllCollection.filter((item) => item.name.toLowerCase() === name.toLowerCase())[0].list.filter((item) => item.id === id);
     return get.length > 0 ? get[0] : false;
   };
   const deleteAll = () => {

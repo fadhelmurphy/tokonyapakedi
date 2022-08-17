@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import TypeOne from "./type-1";
 import TypeTwo from "./type-2";
 import TypeThree from "./type-3";
+import Confirmation from "./confirmation";
 
 const Template = [
 	{
@@ -22,6 +23,10 @@ const Template = [
 	{
 		id: "type-3",
 		component: TypeThree,
+	},
+	{
+		id: "confirmation",
+		component: Confirmation,
 	},
 ];
 
