@@ -6,8 +6,6 @@ const intialCollection = {
 export const collectionReducer = (state = intialCollection, action) => {
   const { type, payload } = action;
   let result = []
-  console.log("prevState: ", state);
-  console.log("action: ", action);
   switch (type) {
     case "ADD_SUB_TO_COLLECTION":
       result = state.AllCollection.map((ParentItem) => {

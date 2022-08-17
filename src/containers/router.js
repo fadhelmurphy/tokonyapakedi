@@ -22,6 +22,9 @@ export default function index() {
       url: "/collection",
       exact: true,
     },
+    {
+      url: "/anime/:id",
+    },
   ];
   return (
     <>

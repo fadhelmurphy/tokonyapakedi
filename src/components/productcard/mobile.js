@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function Mobile({onAdd = () => {}, ...props }) {
-    const { href = "", coverImage: {
+    const { href = `/anime/${props.id}`, coverImage: {
         large = ""
     }, title: {
         english = "",
@@ -17,7 +17,7 @@ export default function Mobile({onAdd = () => {}, ...props }) {
           </a>
         </div>
         <div className="title">
-          <span className="english">{english}</span>
+          <a href={href} className="english">{english}</a>
           <span className="romaji">{romaji}</span>
         </div>
         <div onClick={()=>onAdd(props)} className="action-card"><p>ADD</p></div>

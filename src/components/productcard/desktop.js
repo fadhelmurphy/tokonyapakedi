@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function Desktop({onAdd = () => {}, ...props }) {
-    const { href = "", coverImage: {
+    const { href = `/anime/${props.id}`, coverImage: {
         large = ""
     }, title: {
         english = "",
@@ -17,9 +17,9 @@ export default function Desktop({onAdd = () => {}, ...props }) {
             </a>
         </div>
         <div className="title">
-            <span className="english">
+            <a href={href} className="english">
                 {english}
-            </span>
+            </a>
             <span className="romaji">
                 {romaji}
             </span>

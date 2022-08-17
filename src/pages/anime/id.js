@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { withContext } from "../store/Context";
-import { _getAll } from "../helpers/fetchers";
-import ChildListProducts from "../containers/child-list-products";
-import { ScrollToUp } from "../helpers/utils";
+import { GetRootContext, RootContext, withContext } from "../../store/Context";
+import { _getAll, _getDetail } from "../../helpers/fetchers";
+import ChildListProducts from "../../containers/child-list-products";
+import { ScrollToUp } from "../../helpers/utils";
 // import Pagination from "../components/pagination";
-import { Input } from "../components/form";
-const Button = React.lazy(() => import("../components/button"));
-const Drawer = React.lazy(() => import("../components/drawer"));
-const Pagination = React.lazy(() => import("../components/pagination"));
+import { Input } from "../../components/form";
+import { useNavigate, useParams } from "react-router-dom";
+const Button = React.lazy(() => import("../../components/button"));
+const Drawer = React.lazy(() => import("../../components/drawer"));
+const ChildDetailAnime = React.lazy(() =>
+  import("../../containers/child-detail-anime")
+);
 
-const Home = (props) => {
+const Detail = (props) => {
+  const router = useParams();
+  const navigate = useNavigate();
   const {
     state,
     getOne,
@@ -20,17 +25,24 @@ const Home = (props) => {
     createSubOne,
     updateSelectedCollection,
   } = props;
-  const [formNewCollection, setFormNewCollection] = useState();
-  const [currentCollection, setCurrentCollection] = useState({});
+  const isMobile = Boolean(
+    window.navigator.userAgent.match(
+      /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+    )
+  );
+  const { result, loading } = _getDetail({ id: router?.id });
+  const handleShowDrawer = (key, val) =>
+    setShowDrawer((prev) => ({ ...prev, [key]: val }));
+  const [selectedAnime, setSelectedAnime] = useState({});
   const [showDrawer, setShowDrawer] = useState({
     listCollection: false,
     detailCollection: false,
     addCollection: false,
     editCollection: false,
   });
-  const [page, setPage] = useState(1);
-  const [isNotValid, setNotValid] = useState(false);
-  const [selectedAnime, setSelectedAnime] = useState({});
+  
+  const [formNewCollection, setFormNewCollection] = useState();
+  const [currentCollection, setCurrentCollection] = useState({});
   const HandleChooseCollection = (params) => {
     const { key, selected } = params;
 
@@ -45,31 +57,18 @@ const Home = (props) => {
 
     updateSelectedCollection(updatedList);
   };
-  const handleShowDrawer = (key, val) =>
-    setShowDrawer((prev) => ({ ...prev, [key]: val }));
-  // deleteAll();
-  // const getOneCollection = getOne(16498);
-  const { result, loading, refetch } = _getAll({ page, perPage: 16 });
-  // result && create(result);
-  // result && deleteAll();
-  // updateOne({id:updateOne, title: {english: "Padelpop"}})
-  // useEffect(() => {
-  //   // updateOne({id:updateOne, title: {english: "Padelpop"}})
-  // }, [])
-  const isMobile = Boolean(
-    window.navigator.userAgent.match(
-      /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
-    )
-  );
+  
+  const HandleGetOneCollection = (name) => {
+    setCurrentCollection(getOne(name));
+  };
+
   const onAdd = (val) => {
     setSelectedAnime(val);
     handleShowDrawer("listCollection", true);
   };
-  const HandleLoadMore = async (e) => {
-    ScrollToUp();
-    setPage(e);
-    refetch(e);
-  };
+  
+  const [isNotValid, setNotValid] = useState(false);
+  
   const HandleChangeSelect = async (opt, val) => {
     if (opt === "name") {
       setFormNewCollection((prev) => ({
@@ -78,35 +77,11 @@ const Home = (props) => {
       }));
     }
   };
-  const HandleGetOneCollection = (name) => {
-    setCurrentCollection(getOne(name));
-  };
-
-  // console.log(selectedAnime, "selectedAnime")
-  console.log(state?.collection?.AllCollection, "JOSS");
-
-  return (
-    <>
-      <h1>Product List</h1>
-      {loading}
-      <div className="container">
-        {result && result.media && (
-          <ChildListProducts
-            isMobile={isMobile}
-            data={result.media}
-            onAdd={(val) => onAdd(val)}
-          />
-        )}
-        {result && result.pageInfo && (
-          <Pagination
-            page={result?.pageInfo?.currentPage}
-            total_page={result?.pageInfo?.lastPage}
-            update_page={(e) => HandleLoadMore(e)}
-            is_mobile={false}
-          />
-        )}
-      </div>
-      <Drawer
+  return <>
+  {result && <ChildDetailAnime isMobile={isMobile} {...result} onAdd={(val)=>onAdd(val)} />}
+  
+  
+  <Drawer
         isMobile={isMobile}
         contentBackground="#ffffff"
         title="Your Collection"
@@ -232,7 +207,48 @@ const Home = (props) => {
         type="type-1"
         saveTitle="ADD NEW COLLECTION"
       >
-        <div className="collection-list"></div>
+        <div className="collection-list">
+            
+          {currentCollection?.list?.length === 0 && (
+            <p>There's no collection yet</p>
+          )}
+          {currentCollection?.list?.map((item, idx) => (
+            <div
+              key={idx}
+              className={`collection-card${item.selected ? " active" : ""}`}
+            >
+              <div className="collection-card-content">
+                <h3>{item.title?.english || item.title?.romaji}</h3>
+              </div>
+              <div className="collection-card-footer">
+                <div className="action">
+                  <Button
+                    color="#000"
+                    size="medium"
+                    variant="secondary"
+                    font_family="Poppins"
+                    font_weight="500"
+                    on_click={() => {
+                      window.location = `${process.env.REACT_APP_BASEURL}/anime/${item?.id}`
+                    }}
+                  >
+                    SEE DETAIL
+                  </Button>
+                  <Button
+                    color="#000"
+                    size="medium"
+                    variant="secondary"
+                    font_family="Poppins"
+                    font_weight="500"
+                    on_click={() => deleteOne(item.name)}
+                  >
+                    DELETE
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </Drawer>
       <Drawer
         isMobile={isMobile}
@@ -309,6 +325,7 @@ const Home = (props) => {
           />
         </div>
       </Drawer>
+      
       <style jsx>
         {`
           .collection-card {
@@ -353,7 +370,6 @@ const Home = (props) => {
           }
         `}
       </style>
-    </>
-  );
+  </>;
 };
-export default withContext(Home);
+export default withContext(Detail);
