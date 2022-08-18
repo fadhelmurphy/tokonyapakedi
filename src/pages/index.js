@@ -55,7 +55,7 @@ const Home = (props) => {
     setShowDrawer((prev) => ({ ...prev, [key]: val }));
   // deleteAll();
   // const getOneCollection = getOne(16498);
-  const { result, loading, refetch } = _getAll({ page, perPage: 16 });
+  const { result, loading, refetch } = _getAll({ page, perPage: 10 });
   // result && create(result);
   // result && deleteAll();
   // updateOne({id:updateOne, title: {english: "Padelpop"}})
