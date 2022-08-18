@@ -36,6 +36,18 @@ export default function Mobile({ onAdd = () => {}, ...props }) {
     }
   `;
   const ChildDetailContainer = css`
+  h1 {
+    margin: 0;
+  }
+  .studios {
+    margin-bottom: 30px;
+  }
+  .romaji {
+    margin: 0;
+  }
+  span {
+    text-transform: Capitalize;
+  }
     .header .img-banner {
       width: 100%;
       height: 200px;
@@ -82,20 +94,33 @@ export default function Mobile({ onAdd = () => {}, ...props }) {
             <div className="description col-12">
               <span className="title">
                 <h1>{english}</h1>
+                <p className="romaji">{romaji}</p>
+              <span className="studios">
+                <h4>
+                    {
+                      // Checks whether anime has studios before accessing key
+                      studios.nodes && studios.nodes.length >= 1
+                        ? !studios.nodes[0].name
+                          ? "Unknown"
+                          : studios.nodes[0].name
+                        : "Unknown"
+                    }
+                </h4>
+              </span>
               </span>
               <span className="format">
                 <p>
-                  Format : <b>{format}</b>
+                  Format : {format}
                 </p>
               </span>
               <span className="episodes">
                 <p>
-                  Episodes : <b>{episodes}</b>
+                  Episodes : {episodes}
                 </p>
               </span>
               <span className="status">
                 <p>
-                  Status : <b>{status}</b>
+                  Status : {status}
                 </p>
               </span>
               <span className="genres">
@@ -106,21 +131,6 @@ export default function Mobile({ onAdd = () => {}, ...props }) {
                       // Checks whether genre has true in order to display
                       genres && genres.length >= 1
                         ? genres.join(", ")
-                        : "Unknown"
-                    }
-                  </b>
-                </p>
-              </span>
-              <span className="studios">
-                <p>
-                  Studio :{" "}
-                  <b>
-                    {
-                      // Checks whether anime has studios before accessing key
-                      studios.nodes && studios.nodes.length >= 1
-                        ? !studios.nodes[0].name
-                          ? "Unknown"
-                          : studios.nodes[0].name
                         : "Unknown"
                     }
                   </b>
