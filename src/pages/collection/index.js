@@ -173,7 +173,7 @@ padding: 20px;
           type="type-1"
           saveTitle="SUBMIT"
         >
-          <div className="collection-list">
+          <CollectionList>
             <Input
               label="Name"
               value={formNewCollection?.name || ""}
@@ -182,7 +182,7 @@ padding: 20px;
               ifNotValid={(val) => setNotValid(val)}
               placeholder="Example : MEME"
             />
-          </div>
+          </CollectionList>
         </Drawer>
 
         <Drawer
