@@ -6,12 +6,11 @@ import { ScrollToUp } from "../helpers/utils";
 // import Pagination from "../components/pagination";
 import { Input } from "../components/form";
 import { useNavigate } from "react-router-dom";
+const Layout = React.lazy(() => import("../containers/layout"));
 const Button = React.lazy(() => import("../components/button"));
 const Drawer = React.lazy(() => import("../components/drawer"));
 const Pagination = React.lazy(() => import("../components/pagination"));
-const CollectionCard = React.lazy(() =>
-  import("../components/collectioncard")
-);
+const CollectionCard = React.lazy(() => import("../components/collectioncard"));
 
 const Home = (props) => {
   const {
@@ -93,9 +92,9 @@ const Home = (props) => {
   // console.log(state?.collection?.AllCollection, "JOSS");
 
   return (
-    <>
-      {loading}
+    <Layout>
       <div className="container">
+        {loading}
         {result && result.media && (
           <ChildListProducts
             title="Movie list"
@@ -105,13 +104,14 @@ const Home = (props) => {
           />
         )}
         {result && result.pageInfo && (
-          <Pagination
-            isMobile={isMobile}
-            page={result?.pageInfo?.currentPage}
-            total_page={result?.pageInfo?.lastPage}
-            update_page={(e) => HandleLoadMore(e)}
-            is_mobile={false}
-          />
+          <div className="wrapper-pagination">
+            <Pagination
+              is_mobile={isMobile}
+              page={result?.pageInfo?.currentPage}
+              total_page={result?.pageInfo?.lastPage}
+              update_page={(e) => HandleLoadMore(e)}
+            />
+          </div>
         )}
       </div>
       <Drawer
@@ -122,9 +122,13 @@ const Home = (props) => {
         onHide={() => {
           handleShowDrawer("listCollection", false);
         }}
-        onBack={!isMobile ? () => {
-          handleShowDrawer("listCollection", false);
-        } : null}
+        onBack={
+          !isMobile
+            ? () => {
+                handleShowDrawer("listCollection", false);
+              }
+            : null
+        }
         onSave={() => {
           const selected = state?.collection?.AllCollection.filter(
             (item) => item.selected
@@ -156,10 +160,10 @@ const Home = (props) => {
             handleShowDrawer("listCollection", false);
           }
         }}
-        onSelect={()=>{
-            setFormNewCollection(undefined);
-            handleShowDrawer("listCollection", false);
-            handleShowDrawer("addCollection", true);
+        onSelect={() => {
+          setFormNewCollection(undefined);
+          handleShowDrawer("listCollection", false);
+          handleShowDrawer("addCollection", true);
         }}
         type="type-1"
         saveTitle="SUBMIT"
@@ -219,7 +223,9 @@ const Home = (props) => {
                     <img src={item.coverImage.large} alt="image detail" />
                   </div>
                   <div className="col-8">
-                    <h2 onClick={() => navigate(`/anime/${item.id}`)}>{item.title?.english || item.title?.romaji}</h2>
+                    <h2 onClick={() => navigate(`/anime/${item.id}`)}>
+                      {item.title?.english || item.title?.romaji}
+                    </h2>
 
                     <span className="rating">
                       <p>
@@ -356,9 +362,15 @@ const Home = (props) => {
             grid-gap: 16px;
             padding: 20px;
           }
+          .wrapper-pagination {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 15px;
+            padding: 20px;
+          }
         `}
       </style>
-    </>
+    </Layout>
   );
 };
 export default withContext(Home);
