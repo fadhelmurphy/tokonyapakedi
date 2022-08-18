@@ -311,7 +311,7 @@ const Home = (props) => {
             border: 1px solid #000;
           }
           .collection-card h4 {
-            font-family: "Poppins";
+            font-family: "system-ui";
             font-style: normal;
             font-weight: 600;
             font-size: 14px;

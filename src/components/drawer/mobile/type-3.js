@@ -31,7 +31,7 @@ const Type3 = ({
 			typeof onSave === "function" && (
 				<div className="footer-btn grid">
 					<div className="col-12">
-						<Button block size="medium" variant="primary" font_family="Poppins" font_weight="500" on_click={onSave}>{saveTitle}</Button>
+						<Button block size="medium" variant="primary" font_family="system-ui" font_weight="500" on_click={onSave}>{saveTitle}</Button>
 					</div>
 				</div>
 			)

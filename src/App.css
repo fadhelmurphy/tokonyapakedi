@@ -112,7 +112,7 @@
 .paging .paging-prev-text-inactive,
 .paging .paging-button,
 .paging .paging-button-active {
-  font-family: Poppins, sans-serif;
+  font-family: system-ui, sans-serif;
 }
 
 .paging .paging-prev-text-inactive,

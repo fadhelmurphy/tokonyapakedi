@@ -20,10 +20,10 @@ const Confirmation = ({
 				typeof onSave === "function" && (
 					<div className="footer-btn grid">
 						<div className="col-12">
-							<Button block size="medium" variant="primary" font_family="Poppins" font_weight="500" on_click={onSave}>DELETE</Button>
+							<Button block size="medium" variant="primary" font_family="system-ui" font_weight="500" on_click={onSave}>DELETE</Button>
 						</div>
 						<div className="col-12">
-							<Button block color="#000" size="medium" variant="secondary" font_family="Poppins" font_weight="500" on_click={onHide}>CANCEL</Button>
+							<Button block color="#000" size="medium" variant="secondary" font_family="system-ui" font_weight="500" on_click={onHide}>CANCEL</Button>
 						</div>
 					</div>
 				)
@@ -62,7 +62,7 @@ const Confirmation = ({
 					background: ${contentBackground};
 					width: 300px;
 					z-index: ${zIndex};
-					font-family: Poppins;
+					font-family: system-ui;
 					opacity: 0;
 					visibility: hidden;
 					transition: all .4s ease;

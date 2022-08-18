@@ -103,7 +103,7 @@ const DetailCollection = (props) => {
                         color="#000"
                         size="medium"
                         variant="secondary"
-                        font_family="Poppins"
+                        font_family="system-ui"
                         font_weight="500"
                         on_click={() => {
                           setSelectedAnime(item);
@@ -138,7 +138,7 @@ const DetailCollection = (props) => {
         <style jsx="true">
           {`
             .collection-card h2 {
-              font-family: "Poppins";
+              font-family: "system-ui";
               font-style: normal;
               font-weight: 600;
               text-transform: capitalize;

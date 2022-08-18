@@ -49,7 +49,7 @@ const Type3 = ({
                 color="#000"
                 size="medium"
                 variant="secondary"
-                font_family="Poppins"
+                font_family="system-ui"
                 font_weight="500"
                 on_click={onBack||onHide}
               >
@@ -63,7 +63,7 @@ const Type3 = ({
                   color="#000"
                   size="medium"
                   variant="secondary"
-                  font_family="Poppins"
+                  font_family="system-ui"
                   font_weight="500"
                   on_click={onSelect}
                 >
@@ -76,7 +76,7 @@ const Type3 = ({
                 block
                 size="medium"
                 variant="primary"
-                font_family="Poppins"
+                font_family="system-ui"
                 font_weight="500"
                 on_click={onSave}
               >
@@ -92,7 +92,7 @@ const Type3 = ({
                 color="#000"
                 size="medium"
                 variant="secondary"
-                font_family="Poppins"
+                font_family="system-ui"
                 font_weight="500"
                 on_click={onBack}
               >
@@ -105,7 +105,7 @@ const Type3 = ({
         // 		<div className="footer-btn grid">
         // 			<div className="col-12">
         // 				<Button block size="medium" variant="primary-bs"
-        // font_family="Poppins"
+        // font_family="system-ui"
         // font_weight="500"
         // on_click={onSave}>{saveTitle}</Button>
         // 			</div>
@@ -149,7 +149,7 @@ const Type3 = ({
           background: ${contentBackground};
           width: 800px;
           z-index: ${zIndex};
-          font-family: Poppins;
+          font-family: system-ui;
           opacity: 0;
           visibility: hidden;
           transition: all 0.4s ease;

@@ -1,4 +1,5 @@
 import React from "react";
+import styled from '@emotion/styled'
 
 export default function Desktop({onAdd = () => {}, ...props }) {
     const { href = `/anime/${props.id}`, coverImage: {
@@ -8,6 +9,26 @@ export default function Desktop({onAdd = () => {}, ...props }) {
         romaji ="",
     }
 } = props;
+const ActionCard = styled.div`
+
+height: auto;
+width: 100%;
+box-sizing: border-box;
+z-index: 1;
+& p{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 35px;
+  background: #1B8884;
+  text-decoration: none;
+  color: #fff;
+  margin: 10px 0 0 0;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+`
   return (
     <>
       <div className="product-card-desktop">
@@ -24,30 +45,10 @@ export default function Desktop({onAdd = () => {}, ...props }) {
                 {romaji}
             </span>
         </div>
-        <div onClick={()=>onAdd(props)} className="action-card"><p>ADD</p></div>
+        <ActionCard onClick={()=>onAdd(props)} className="action-card"><p>ADD</p></ActionCard>
       </div>
       <style>
         {`
-        div.action-card {
-            height: auto;
-            width: 100%;
-            box-sizing: border-box;
-            z-index: 1;
-            transition: all .5s ease;
-          }
-          div.action-card p {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 35px;
-            background: #1B8884;
-            text-decoration: none;
-            color: #fff;
-            margin: 10px 0 0 0;
-            box-sizing: border-box;
-            cursor: pointer;
-          }
             .img-product {
                 width: 100%;
                 height: 200px;

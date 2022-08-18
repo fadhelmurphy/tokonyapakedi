@@ -42,14 +42,14 @@ const Type1 = ({
 		{
 			typeof onSave !== "function" ? (
 				<div className="footer-btn">
-				<Button block color="#000" size="medium" variant="secondary" font_family="Poppins" font_weight="500" on_click={onHide||onBack}>Cancel</Button>
+				<Button block color="#000" size="medium" variant="secondary" font_family="system-ui" font_weight="500" on_click={onHide||onBack}>Cancel</Button>
 				</div>
 			)
 			: (
 				<div className="footer-btn">
-							<Button block margin="0 0 15px" color="#000" size="medium" variant="secondary" font_family="Poppins" font_weight="500" on_click={onBack||onHide}>Cancel</Button>
-							{typeof onSelect === "function" && (<Button block margin="0 0 15px" size="medium" variant="secondary" font_family="Poppins" font_weight="500" on_click={onSelect}>ADD NEW COLLECTION</Button>)}
-							<Button block margin="0 0 15px" size="medium" variant="primary" font_family="Poppins" font_weight="500" on_click={onSave}>{saveTitle}</Button>
+							<Button block margin="0 0 15px" color="#000" size="medium" variant="secondary" font_family="system-ui" font_weight="500" on_click={onBack||onHide}>Cancel</Button>
+							{typeof onSelect === "function" && (<Button block margin="0 0 15px" size="medium" variant="secondary" font_family="system-ui" font_weight="500" on_click={onSelect}>ADD NEW COLLECTION</Button>)}
+							<Button block margin="0 0 15px" size="medium" variant="primary" font_family="system-ui" font_weight="500" on_click={onSave}>{saveTitle}</Button>
 					</div>
 			)
 		}

@@ -54,7 +54,7 @@ const Button = ({
     is_mobile: is_mobile || false,
     variant: variant || `primary`,
     block: block || false,
-    font_family: font_family || `"Poppins", sans-serif`,
+    font_family: font_family || `"system-ui", sans-serif`,
     font_weight: font_weight || `bold`,
     border_radius : border_radius || `2px`,
     color: color,

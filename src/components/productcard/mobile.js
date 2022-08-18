@@ -1,4 +1,5 @@
 import React from "react";
+import styled from '@emotion/styled'
 
 export default function Mobile({onAdd = () => {}, ...props }) {
     const { href = `/anime/${props.id}`, coverImage: {
@@ -8,6 +9,27 @@ export default function Mobile({onAdd = () => {}, ...props }) {
         romaji ="",
     }
 } = props;
+
+const ActionCard = styled.div`
+
+height: auto;
+width: 100%;
+box-sizing: border-box;
+z-index: 1;
+& p{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 35px;
+  background: #1B8884;
+  text-decoration: none;
+  color: #fff;
+  margin: 10px 0 0 0;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+`
   return (
     <>
       <div className="product-card-mobile">

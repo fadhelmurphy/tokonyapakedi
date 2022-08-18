@@ -49,17 +49,17 @@ const Type3 = ({
 							<div className="code">{promoCode}</div>
 						</div>
 						<div className="col-5">
-							<Button block size="medium" variant="primary-bs" font_family="Poppins" font_weight="500" on_click={onSave}>{saveTitle}</Button>
+							<Button block size="medium" variant="primary-bs" font_family="system-ui" font_weight="500" on_click={onSave}>{saveTitle}</Button>
 						</div>
 					</div>
 				)
 				: (
 					<div className="footer-btn display-flex">
 						<div className="col-3">
-							<Button block color="#000" size="medium" variant="secondary" font_family="Poppins" font_weight="500" on_click={onHide}>CANCEL</Button>
+							<Button block color="#000" size="medium" variant="secondary" font_family="system-ui" font_weight="500" on_click={onHide}>CANCEL</Button>
 						</div>
 						<div className="col-3">
-							<Button block size="medium" variant="primary" font_family="Poppins" font_weight="500" is_disabled={!onSave} on_click={onSave}>{saveTitle}</Button>
+							<Button block size="medium" variant="primary" font_family="system-ui" font_weight="500" is_disabled={!onSave} on_click={onSave}>{saveTitle}</Button>
 						</div>
 					</div>
 				))}
@@ -97,7 +97,7 @@ const Type3 = ({
 					background: ${contentBackground};
 					width: ${width};
 					z-index: ${zIndex};
-					font-family: Poppins;
+					font-family: system-ui;
 					opacity: 0;
 					visibility: hidden;
 					transition: all .4s ease;

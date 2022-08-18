@@ -31,7 +31,7 @@ const Input = ({
 			{`
 				.form-input-bs {
 					padding: 0 0 10px 0;
-					font-family: Poppins;
+					font-family: system-ui;
 				}
 				.form-input-bs p.label {
 					margin: 0 0 5px 0;

@@ -26,7 +26,7 @@ export default function Desktop({ data = [], onChoose = () => {}, onInfo = () =>
                 color="#000"
                 size="medium"
                 variant="secondary"
-                font_family="Poppins"
+                font_family="system-ui"
                 font_weight="500"
                 on_click={() => {
                   onEdit(item);
@@ -41,7 +41,7 @@ export default function Desktop({ data = [], onChoose = () => {}, onInfo = () =>
                 color="#000"
                 size="medium"
                 variant="secondary"
-                font_family="Poppins"
+                font_family="system-ui"
                 font_weight="500"
                 on_click={() => {
                   // deleteOne(item.name)
@@ -63,7 +63,7 @@ export default function Desktop({ data = [], onChoose = () => {}, onInfo = () =>
             border: 1px solid #000;
           }
           .collection-card h2 {
-            font-family: "Poppins";
+            font-family: "system-ui";
             text-transform: capitalize;
             display: flex;
             align-items: center;
