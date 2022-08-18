@@ -241,7 +241,6 @@ padding: 20px;
               const isCollectionExist = getOne(formNewCollection?.name);
               if (!isCollectionExist) {
                 handleShowDrawer("editCollection", false);
-                handleShowDrawer("listCollection", true);
                 updateOne({
                   name: currentCollection.name,
                   newName: formNewCollection?.name,
@@ -253,7 +252,6 @@ padding: 20px;
             }
           }}
           onBack={() => {
-            handleShowDrawer("listCollection", true);
             handleShowDrawer("editCollection", false);
           }}
           type="type-1"
