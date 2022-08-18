@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { withContext } from "../../store/Context";
 import { Input } from "../../components/form";
+import styled from "@emotion/styled";
+// import { css } from "@emotion/css";
 const Layout = React.lazy(() => import("../../containers/layout"));
 const Drawer = React.lazy(() => import("../../components/drawer"));
 const CollectionCard = React.lazy(() =>
@@ -72,15 +74,50 @@ const Collection = (props) => {
       }));
     }
   };
+  const CollectionList = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 16px;
+  padding: 20px;`
+  const ActionCard = styled.div`
+  height: auto;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1;
+  & p {
+    font-weight: 500;
+    border-radius: 5px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 35px;
+    background: #1b8884;
+    text-decoration: none;
+    color: #fff;
+    margin: 10px 0 0 0;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+`;
+const ContainerAction = styled.div`
+display: grid;
+grid-template-columns: repeat(${isMobile ? "1" : "2"}, 1fr);
+grid-gap: 16px;
+padding: 20px;
+`
   return (
     <Layout title="My Collection">
       <>
         <div className="container">
-          <div className="collection-list">
+          <CollectionList>
+            <ContainerAction>
             <h1>Your Collection</h1>
-            <div onClick={() => onAdd()} className="action-card">
-              <p>ADD</p>
-            </div>
+            <ActionCard onClick={() => onAdd()} className="action-card">
+              <p>+ ADD NEW COLLECTION</p>
+            </ActionCard>
+            </ContainerAction>
             {state?.collection?.AllCollection?.length === 0 && (
               <p>There's no collection yet</p>
             )}
@@ -107,7 +144,7 @@ const Collection = (props) => {
                 handleShowDrawer("deleteConfirmation", true);
               }}
             />
-          </div>
+          </CollectionList>
         </div>
         <Drawer
           isMobile={isMobile}
@@ -194,7 +231,7 @@ const Collection = (props) => {
           type="type-1"
           saveTitle="SUBMIT"
         >
-          <div className="collection-list">
+          <CollectionList>
             <Input
               label="Name"
               value={formNewCollection?.name || ""}
@@ -203,38 +240,8 @@ const Collection = (props) => {
               ifNotValid={(val) => setNotValid(val)}
               placeholder="Example : MEME"
             />
-          </div>
+          </CollectionList>
         </Drawer>
-        <style jsx="true">
-          {`
-            div.action-card {
-              height: auto;
-              width: 100%;
-              box-sizing: border-box;
-              z-index: 1;
-              transition: all 0.5s ease;
-            }
-            div.action-card p {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              width: 100%;
-              height: 35px;
-              background: #1b8884;
-              text-decoration: none;
-              color: #fff;
-              margin: 10px 0 0 0;
-              box-sizing: border-box;
-              cursor: pointer;
-            }
-            .collection-list {
-              display: grid;
-              grid-template-columns: 1fr;
-              grid-gap: 16px;
-              padding: 20px;
-            }
-          `}
-        </style>
       </>
     </Layout>
   );

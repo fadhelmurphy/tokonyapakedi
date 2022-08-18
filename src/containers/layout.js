@@ -6,10 +6,16 @@ import { Helmet } from "react-helmet";
 
 const Menu = (props) => {
   const MenuWrapper = styled.div`
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 15px;
-    padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  & .list-menu {
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
     & .list-menu div:not(:first-child) {
       margin: 0 0 0 20px;
     }
@@ -34,6 +40,9 @@ const Menu = (props) => {
           `list-menu ` +
           css`
             display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
           `
         }
       >

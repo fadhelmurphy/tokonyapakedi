@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { GetRootContext, RootContext, withContext } from "../../store/Context";
+import styled from "@emotion/styled";
 // import Pagination from "../components/pagination";
 import { Input } from "../../components/form";
 import { useNavigate, useParams } from "react-router-dom";
@@ -43,11 +44,16 @@ const DetailCollection = (props) => {
     deleteConfirmation: false,
   });
   const title = capitalizeFirstLetter((currentCollection?.name) || "Loading...");
+  const CollectionList = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 16px;
+  padding: 20px;`
   return (
     <Layout title={title}>
       <>
         <div className="container">
-          <div className="collection-list">
+          <CollectionList>
             {currentCollection && (
               <h1>{title}</h1>
             )}
@@ -117,7 +123,7 @@ const DetailCollection = (props) => {
                   </div>
                 </div>
               ))}
-          </div>
+          </CollectionList>
         </div>
         <Drawer
           isMobile={isMobile}
@@ -175,12 +181,6 @@ const DetailCollection = (props) => {
             }
             .collection-card-footer .action button:not(:first-child) {
               margin: 0 0 0 10px;
-            }
-            .collection-list {
-              display: grid;
-              grid-template-columns: 1fr;
-              grid-gap: 16px;
-              padding: 20px;
             }
           `}
         </style>
