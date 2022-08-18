@@ -1,7 +1,7 @@
 # Tokonya Pak Edi's Website
 
 ## Demo 
-This project is deployed to Vercel and can be accessed [Here](https://tokonyapakedi.vercel.app/)
+This project is deployed to Vercel and can be accessed [Here](https://tokonyapakedi.vercel.app/). This website is adaptive.
 ## Tech Stack
 
 * React JS
