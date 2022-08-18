@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { withContext } from "../../store/Context";
 import { Input } from "../../components/form";
 import styled from "@emotion/styled";
-// import { css } from "@emotion/css";
+import { css } from "@emotion/css";
 const Layout = React.lazy(() => import("../../containers/layout"));
 const Drawer = React.lazy(() => import("../../components/drawer"));
 const CollectionCard = React.lazy(() =>
@@ -74,11 +74,11 @@ const Collection = (props) => {
       }));
     }
   };
-  const CollectionList = styled.div`
+  const CollectionList = css`
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 16px;
-  padding: 20px;`
+  padding: 20px;`;
   const ActionCard = styled.div`
   height: auto;
   width: 100%;
@@ -111,7 +111,7 @@ padding: 20px;
     <Layout title="My Collection">
       <>
         <div className="container">
-          <CollectionList>
+          <div className={CollectionList}>
             <ContainerAction>
             <h1>Your Collection</h1>
             <ActionCard onClick={() => onAdd()} className="action-card">
@@ -144,7 +144,7 @@ padding: 20px;
                 handleShowDrawer("deleteConfirmation", true);
               }}
             />
-          </CollectionList>
+          </div>
         </div>
         <Drawer
           isMobile={isMobile}
@@ -173,7 +173,7 @@ padding: 20px;
           type="type-1"
           saveTitle="SUBMIT"
         >
-          <CollectionList>
+          <div className={CollectionList}>
             <Input
               label="Name"
               value={formNewCollection?.name || ""}
@@ -182,7 +182,7 @@ padding: 20px;
               ifNotValid={(val) => setNotValid(val)}
               placeholder="Example : MEME"
             />
-          </CollectionList>
+          </div>
         </Drawer>
 
         <Drawer
@@ -231,7 +231,7 @@ padding: 20px;
           type="type-1"
           saveTitle="SUBMIT"
         >
-          <CollectionList>
+          <div className={CollectionList}>
             <Input
               label="Name"
               value={formNewCollection?.name || ""}
@@ -240,7 +240,7 @@ padding: 20px;
               ifNotValid={(val) => setNotValid(val)}
               placeholder="Example : MEME"
             />
-          </CollectionList>
+          </div>
         </Drawer>
       </>
     </Layout>
