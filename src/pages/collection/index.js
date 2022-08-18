@@ -73,7 +73,7 @@ const Collection = (props) => {
     }
   };
   return (
-    <Layout>
+    <Layout title="My Collection">
       <>
         <div className="container">
           <div className="collection-list">

@@ -92,7 +92,7 @@ const Home = (props) => {
   // console.log(state?.collection?.AllCollection, "JOSS");
 
   return (
-    <Layout>
+    <Layout title="Home">
       <div className="container">
         {loading}
         {result && result.media && (

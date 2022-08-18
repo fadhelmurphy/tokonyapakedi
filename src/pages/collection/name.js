@@ -42,13 +42,14 @@ const DetailCollection = (props) => {
     editCollection: false,
     deleteConfirmation: false,
   });
+  const title = capitalizeFirstLetter((currentCollection?.name) || "Loading...");
   return (
-    <Layout>
+    <Layout title={title}>
       <>
         <div className="container">
           <div className="collection-list">
             {currentCollection && (
-              <h1>{capitalizeFirstLetter(currentCollection.name)}</h1>
+              <h1>{title}</h1>
             )}
             {currentCollection && currentCollection?.list?.length === 0 && (
               <p>There's no movie yet</p>

@@ -6,6 +6,7 @@ import { ScrollToUp } from "../../helpers/utils";
 // import Pagination from "../components/pagination";
 import { Input } from "../../components/form";
 import { useNavigate, useParams } from "react-router-dom";
+import { capitalizeFirstLetter } from "../../helpers/utils";
 const Button = React.lazy(() => import("../../components/button"));
 const Drawer = React.lazy(() => import("../../components/drawer"));
 const CollectionCard = React.lazy(() =>
@@ -83,8 +84,9 @@ const Detail = (props) => {
       }));
     }
   };
+  const title = capitalizeFirstLetter((result?.title?.english || result?.title?.romaji) || "Loading...");
   return (
-    <Layout>
+    <Layout title={title}>
       <>
         {result && (
           <ChildDetailAnime
