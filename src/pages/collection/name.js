@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import { Input } from "../../components/form";
 import { useNavigate, useParams } from "react-router-dom";
 import { capitalizeFirstLetter } from "../../helpers/utils";
+import { css } from "@emotion/css";
 const Button = React.lazy(() => import("../../components/button"));
 const Drawer = React.lazy(() => import("../../components/drawer"));
 const CollectionCard = React.lazy(() =>
@@ -43,20 +44,107 @@ const DetailCollection = (props) => {
     editCollection: false,
     deleteConfirmation: false,
   });
+  const [formNewCollection, setFormNewCollection] = useState();
+  const [isNotValid, setNotValid] = useState(false);
+  const HandleChangeSelect = async (opt, val) => {
+    if (opt === "name") {
+      setFormNewCollection((prev) => ({
+        ...prev,
+        name: val,
+      }));
+    }
+  };
   const title = capitalizeFirstLetter((currentCollection?.name) || "Loading...");
-  const CollectionList = styled.div`
+  const CollectionList = css`
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 16px;
-  padding: 20px;`
+  padding: 20px;
+  
+  & .collection-card h2 {
+    font-family: "system-ui";
+    font-style: normal;
+    font-weight: 600;
+    text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  & .collection-card-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+  }
+  & .collection-card-content a {
+    text-decoration: none;
+    color: #000;
+  }
+  & .collection-card-content .grid .col-8 {
+    align-self: center;
+    padding: 10px;
+  }
+  & .collection-card-content .grid .col-4 img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  & .collection-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f9fafb;
+    padding: 15px;
+  }
+  & .collection-card-footer .action button:not(:first-child) {
+    margin: 0 0 0 10px;
+  }
+  `
+  
+  const ActionCard = styled.div`
+  height: auto;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1;
+  & p {
+    font-weight: 500;
+    border-radius: 5px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 35px;
+    background: #1b8884;
+    text-decoration: none;
+    color: #fff;
+    margin: 10px 0 0 0;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+`;
+const ContainerAction = styled.div`
+display: grid;
+grid-template-columns: repeat(${isMobile ? "1" : "2"}, 1fr);
+grid-gap: 16px;
+padding: 20px;
+`
   return (
     <Layout title={title}>
       <>
         <div className="container">
-          <CollectionList>
+        <div className={CollectionList}>
+            <ContainerAction>
             {currentCollection && (
               <h1>{title}</h1>
             )}
+            <ActionCard onClick={() => {
+              handleShowDrawer("editCollection", true);
+              setFormNewCollection({ name: title });
+            }} className="action-card">
+              <p>Edit</p>
+            </ActionCard>
+            </ContainerAction>
             {currentCollection && currentCollection?.list?.length === 0 && (
               <p>There's no movie yet</p>
             )}
@@ -117,13 +205,13 @@ const DetailCollection = (props) => {
                           handleShowDrawer("deleteConfirmation", true);
                         }}
                       >
-                        DELETE
+                        Remove
                       </Button>
                     </div>
                   </div>
                 </div>
               ))}
-          </CollectionList>
+          </div>
         </div>
         <Drawer
           isMobile={isMobile}
@@ -142,48 +230,46 @@ const DetailCollection = (props) => {
             // handleShowDrawer("address", true);
           }}
         />
-        <style jsx="true">
-          {`
-            .collection-card h2 {
-              font-family: "system-ui";
-              font-style: normal;
-              font-weight: 600;
-              text-transform: capitalize;
-              display: flex;
-              align-items: center;
-              cursor: pointer;
+        
+        <Drawer
+          isMobile={isMobile}
+          contentBackground="#ffffff"
+          title="Edit Collection"
+          show={showDrawer && showDrawer.editCollection}
+          onSave={() => {
+            if (!isNotValid) {
+              const isCollectionExist = getOne(formNewCollection?.name);
+              if (!isCollectionExist) {
+                handleShowDrawer("editCollection", false);
+                handleShowDrawer("listCollection", true);
+                updateOne({
+                  name: currentCollection.name,
+                  newName: formNewCollection?.name,
+                });
+                navigate(`/collection/${formNewCollection?.name}`)
+              } else {
+                alert("Name Already exist! Please choose another name");
+              }
             }
-            .collection-card-content {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              padding: 15px;
-            }
-            .collection-card-content a {
-              text-decoration: none;
-              color: #000;
-            }
-            .collection-card-content .grid .col-8 {
-              align-self: center;
-              padding: 10px;
-            }
-            .collection-card-content .grid .col-4 img {
-              width: 100%;
-              height: 200px;
-              object-fit: cover;
-            }
-            .collection-card-footer {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              background: #f9fafb;
-              padding: 15px;
-            }
-            .collection-card-footer .action button:not(:first-child) {
-              margin: 0 0 0 10px;
-            }
-          `}
-        </style>
+          }}
+          onBack={() => {
+            handleShowDrawer("listCollection", true);
+            handleShowDrawer("editCollection", false);
+          }}
+          type="type-1"
+          saveTitle="SUBMIT"
+        >
+          <div className={CollectionList}>
+            <Input
+              label="Name"
+              value={formNewCollection?.name || ""}
+              onChange={(val) => HandleChangeSelect("name", val)}
+              validation={!formNewCollection?.name?.length > 0}
+              ifNotValid={(val) => setNotValid(val)}
+              placeholder="Example : MEME"
+            />
+          </div>
+        </Drawer>
       </>
     </Layout>
   );

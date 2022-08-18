@@ -35,7 +35,7 @@ export default function Mobile({ data = [], onEdit = () => {}, onDelete = () => 
                   // setFormNewCollection({ name: item.name });
                 }}
               >
-                EDIT
+                Edit
               </Button>
               <Button
                 color="#000"
@@ -48,7 +48,7 @@ export default function Mobile({ data = [], onEdit = () => {}, onDelete = () => 
                   onDelete(item);
                 }}
               >
-                DELETE
+                Remove
               </Button>
             </div>
           </div>

@@ -208,7 +208,7 @@ const Home = (props) => {
           handleShowDrawer("detailCollection", false);
         }}
         type="type-1"
-        saveTitle="ADD NEW COLLECTION"
+        saveTitle="ADD A COLLECTION"
       >
         <div className="collection-list">
           {currentCollection?.list?.length === 0 && <p>There's no movie yet</p>}

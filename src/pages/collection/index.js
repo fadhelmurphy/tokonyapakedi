@@ -115,7 +115,7 @@ padding: 20px;
             <ContainerAction>
             <h1>Your Collection</h1>
             <ActionCard onClick={() => onAdd()} className="action-card">
-              <p>+ ADD NEW COLLECTION</p>
+              <p>ADD A COLLECTION</p>
             </ActionCard>
             </ContainerAction>
             {state?.collection?.AllCollection?.length === 0 && (
