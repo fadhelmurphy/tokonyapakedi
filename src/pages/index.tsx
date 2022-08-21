@@ -6,13 +6,19 @@ import ChildListProducts from "../containers/child-list-products";
 import { ScrollToUp } from "../helpers/utils";
 // import Pagination from "../components/pagination";
 // import { Input } from "../components/form";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { Input } from "../components/form";
 const Layout = React.lazy(() => import("../containers/layout"));
 const Button = React.lazy(() => import("../components/button"));
 const Drawer = React.lazy(() => import("../components/drawer"));
 const Pagination = React.lazy(() => import("../components/pagination"));
 const CollectionCard = React.lazy(() => import("../components/collectioncard"));
+
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
 
 function App() {
   const { state, dispatch, 
@@ -27,6 +33,8 @@ function App() {
     updateSelectedCollection, } = useContext(AppContext)
   useEffect(() => { }, [])
   
+  const query = useQuery()
+  const pageQuery = query?.get("page");
   const navigate = useHistory();
   const [formNewCollection, setFormNewCollection] = useState<any>();
   const [currentCollection, setCurrentCollection] = useState<any>();
@@ -36,7 +44,7 @@ function App() {
     addCollection: false,
     editCollection: false,
   });
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<any>(pageQuery || 1);
   const [isNotValid, setNotValid] = useState(false);
   const [selectedAnime, setSelectedAnime] = useState<any>();
   const HandleChooseCollection = (params: any) => {
@@ -77,6 +85,7 @@ function App() {
     ScrollToUp();
     setPage(e);
     refetch(e);
+    navigate.push(`?page=${e}`)
   };
   const HandleChangeSelect = async (opt: string, val: any) => {
     if (opt === "name") {
