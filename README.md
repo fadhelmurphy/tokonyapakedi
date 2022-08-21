@@ -4,8 +4,9 @@
 This project is deployed to Vercel and can be accessed [Here](https://tokonyapakedi.vercel.app/). This website is adaptive.
 ## Tech Stack
 
+* TypeScript
 * React JS
-* Context (State Management)
+* React Context (State Management)
 * Local Storage (persist data)
 * Emotion
 * GraphQL
