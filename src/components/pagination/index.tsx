@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import Mobile from './mobile'
 import Desktop from './desktop'
@@ -72,10 +71,6 @@ const Pagination = ({
       }
     }
   }
-}
-
-Pagination.propTypes = {
-  is_mobile: PropTypes.bool.isRequired,
 }
 
 export default Pagination

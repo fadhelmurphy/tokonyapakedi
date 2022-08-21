@@ -103,12 +103,12 @@ function App() {
         )}
         {result && result.pageInfo && (
           <div className="wrapper-pagination">
-            {/* <Pagination
+            <Pagination
               is_mobile={isMobile}
               page={result?.pageInfo?.currentPage}
               total_page={result?.pageInfo?.lastPage}
               update_page={(e: any) => HandleLoadMore(e)}
-            /> */}
+            />
           </div>
         )}
       </div>
